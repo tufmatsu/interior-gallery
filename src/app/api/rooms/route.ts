@@ -31,33 +31,13 @@ export async function GET() {
             return NextResponse.json({ error: "Notion API error", notionResponse: data }, { status: 500 });
         }
 
-        const rooms = data.results.map((page: any) => {
-            // プロパティ名は全て小文字
-            const name = page.properties.name?.title?.[0]?.plain_text || "No Title";
-            const description = page.properties.description?.rich_text?.[0]?.plain_text || "";
-            const slug = page.properties.slug?.rich_text?.[0]?.plain_text || "";
+        // デバッグ: items プロパティの生データを返す
+        const debugInfo = data.results.map((page: any) => ({
+            name: page.properties.name?.title?.[0]?.plain_text,
+            itemsProperty: page.properties.items,
+        }));
 
-            let imageUrl = "";
-            if (page.properties.image?.files?.length > 0) {
-                const file = page.properties.image.files[0];
-                imageUrl = file.file?.url || file.external?.url || "";
-            }
-
-            const itemsText = page.properties.items?.rich_text?.[0]?.plain_text || "";
-            const items = itemsText
-                .split("\n")
-                .filter((line: string) => line.trim() !== "")
-                .map((line: string) => {
-                    const parts = line.trim().split(/\s+/);
-                    const url = parts.pop() || "";
-                    const itemName = parts.join(" ") || "Link";
-                    return { name: itemName, url };
-                });
-
-            return { id: page.id, name, description, slug, imageUrl, items };
-        });
-
-        return NextResponse.json(rooms);
+        return NextResponse.json({ debug: true, pages: debugInfo });
     } catch (error: any) {
         return NextResponse.json({ error: error?.message }, { status: 500 });
     }
