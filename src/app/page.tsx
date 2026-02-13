@@ -92,7 +92,7 @@ export default function Home() {
       <div className="container">
         <section className="hero">
           <h1>ひとへやLabの空想コレクション</h1>
-          <p>こだわりの空間アーカイブ</p>
+          <p>「空想ひとりぐらし」のアーカイブ</p>
         </section>
 
         {isLoading ? (
