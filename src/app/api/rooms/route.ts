@@ -53,18 +53,22 @@ export async function GET() {
                     // URL型: 単一のURLが入っている
                     items = [{ name: "Link", url: itemsProp.url }];
                 } else if (propType === "rich_text" && itemsProp.rich_text?.length > 0) {
-                    // リッチテキスト型: テキストを改行で分割
+                    // リッチテキスト型: 2行で1セット（商品名 + URL）
                     const itemsText = itemsProp.rich_text.map((t: any) => t.plain_text).join("");
-                    items = itemsText
+                    const lines = itemsText
                         .split("\n")
-                        .filter((line: string) => line.trim() !== "")
-                        .map((line: string) => {
-                            const parts = line.trim().split(/\s+/);
-                            const url = parts.pop() || "";
-                            const itemName = parts.join(" ") || "Link";
-                            return { name: itemName, url };
-                        });
+                        .filter((line: string) => line.trim() !== "");
+
+                    // 2行ずつペアにする（1行目=商品名、2行目=URL）
+                    for (let i = 0; i < lines.length; i += 2) {
+                        const itemName = lines[i]?.trim() || "Link";
+                        const url = lines[i + 1]?.trim() || "";
+                        if (url) {
+                            items.push({ name: itemName, url });
+                        }
+                    }
                 }
+
             }
 
             return { id: page.id, name, description, slug, imageUrl, items };
