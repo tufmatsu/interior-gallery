@@ -91,7 +91,7 @@ export default function Home() {
 
       <div className="container">
         <section className="hero">
-          <h1>理想のお部屋コレクション</h1>
+          <h1>ひとへやLabの空想コレクション</h1>
           <p>こだわりの空間アーカイブ</p>
         </section>
 
