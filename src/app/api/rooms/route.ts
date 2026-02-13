@@ -31,13 +31,46 @@ export async function GET() {
             return NextResponse.json({ error: "Notion API error", notionResponse: data }, { status: 500 });
         }
 
-        // デバッグ: items プロパティの生データを返す
-        const debugInfo = data.results.map((page: any) => ({
-            name: page.properties.name?.title?.[0]?.plain_text,
-            itemsProperty: page.properties.items,
-        }));
+        const rooms = data.results.map((page: any) => {
+            const name = page.properties.name?.title?.[0]?.plain_text || "No Title";
+            const description = page.properties.description?.rich_text?.[0]?.plain_text || "";
+            const slug = page.properties.slug?.rich_text?.[0]?.plain_text || "";
 
-        return NextResponse.json({ debug: true, pages: debugInfo });
+            let imageUrl = "";
+            if (page.properties.image?.files?.length > 0) {
+                const file = page.properties.image.files[0];
+                imageUrl = file.file?.url || file.external?.url || "";
+            }
+
+            // items: 複数のプロパティ型に対応
+            const itemsProp = page.properties.items;
+            let items: { name: string; url: string }[] = [];
+
+            if (itemsProp) {
+                const propType = itemsProp.type;
+
+                if (propType === "url" && itemsProp.url) {
+                    // URL型: 単一のURLが入っている
+                    items = [{ name: "Link", url: itemsProp.url }];
+                } else if (propType === "rich_text" && itemsProp.rich_text?.length > 0) {
+                    // リッチテキスト型: テキストを改行で分割
+                    const itemsText = itemsProp.rich_text.map((t: any) => t.plain_text).join("");
+                    items = itemsText
+                        .split("\n")
+                        .filter((line: string) => line.trim() !== "")
+                        .map((line: string) => {
+                            const parts = line.trim().split(/\s+/);
+                            const url = parts.pop() || "";
+                            const itemName = parts.join(" ") || "Link";
+                            return { name: itemName, url };
+                        });
+                }
+            }
+
+            return { id: page.id, name, description, slug, imageUrl, items };
+        });
+
+        return NextResponse.json(rooms);
     } catch (error: any) {
         return NextResponse.json({ error: error?.message }, { status: 500 });
     }
