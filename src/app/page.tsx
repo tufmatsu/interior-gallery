@@ -26,26 +26,28 @@ const getLinkStyle = (url: string) => {
       hoverBg: "#fff5f5"
     };
   } else if (url.includes("amazon") || url.includes("amzn")) {
-    // 将来的にAmazonも使うかも？
     return {
       text: "(Amazonで見る ↗)",
       hoverColor: "#ff9900",
       hoverBg: "#fffaf0"
     };
   } else {
-    // その他のサイト（IKEAとか公式サイトとか）
     return {
       text: "(サイトを見る ↗)",
-      hoverColor: "#35c5f0", // 水色
+      hoverColor: "#35c5f0",
       hoverBg: "#f0f9ff"
     };
   }
 };
 
+const ITEMS_PER_PAGE = 6; // 1回に表示する件数
+
 export default function Home() {
   const [rooms, setRooms] = useState<Room[]>([]);
+  const [displayedRooms, setDisplayedRooms] = useState<Room[]>([]); // 表示中のデータ
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(1); // 現在のページ数
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -54,6 +56,8 @@ export default function Home() {
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
         setRooms(data);
+        // 最初は ITEMS_PER_PAGE 件だけ表示
+        setDisplayedRooms(data.slice(0, ITEMS_PER_PAGE));
       } catch (error) {
         console.error(error);
       } finally {
@@ -62,6 +66,14 @@ export default function Home() {
     };
     fetchRooms();
   }, []);
+
+  // 「もっと見る」ボタンを押したときの処理
+  const loadMore = () => {
+    const nextPage = page + 1;
+    const nextWait = nextPage * ITEMS_PER_PAGE;
+    setDisplayedRooms(rooms.slice(0, nextWait));
+    setPage(nextPage);
+  };
 
   const openModal = (room: Room) => {
     setCurrentRoom(room);
@@ -98,37 +110,70 @@ export default function Home() {
         {isLoading ? (
           <div style={{ textAlign: "center", padding: "40px" }}>Loading...</div>
         ) : (
-          <main className="gallery-grid">
-            {rooms.length === 0 ? (
-              <p style={{ gridColumn: "1 / -1", textAlign: "center" }}>
-                部屋データが見つかりません。Notionに追加してください。
-              </p>
-            ) : (
-              rooms.map((room) => (
-                <div
-                  key={room.id}
-                  className="room-card"
-                  onClick={() => openModal(room)}
-                >
-                  <div className="room-image-wrapper">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={room.imageUrl || "https://placehold.co/600x400?text=No+Image"}
-                      alt={room.name}
-                      className="room-image"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="room-info">
-                    <h2 className="room-title">{room.name}</h2>
-                    <div className="room-meta">
-                      <span>詳細を見る &rarr;</span>
+          <>
+            <main className="gallery-grid">
+              {displayedRooms.length === 0 ? (
+                <p style={{ gridColumn: "1 / -1", textAlign: "center" }}>
+                  部屋データが見つかりません。Notionに追加してください。
+                </p>
+              ) : (
+                displayedRooms.map((room) => (
+                  <div
+                    key={room.id}
+                    className="room-card"
+                    onClick={() => openModal(room)}
+                  >
+                    <div className="room-image-wrapper">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={room.imageUrl || "https://placehold.co/600x400?text=No+Image"}
+                        alt={room.name}
+                        className="room-image"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="room-info">
+                      <h2 className="room-title">{room.name}</h2>
+                      <div className="room-meta">
+                        <span>詳細を見る &rarr;</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                ))
+              )}
+            </main>
+
+            {/* もっと見るボタン */}
+            {displayedRooms.length < rooms.length && (
+              <div style={{ textAlign: "center", marginTop: "40px", marginBottom: "40px" }}>
+                <button
+                  onClick={loadMore}
+                  style={{
+                    padding: "12px 32px",
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    color: "#333",
+                    backgroundColor: "#fff",
+                    border: "1px solid #ddd",
+                    borderRadius: "30px",
+                    cursor: "pointer",
+                    transition: "all 0.2s",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.05)"
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.borderColor = "#333";
+                    e.currentTarget.style.backgroundColor = "#f9f9f9";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.borderColor = "#ddd";
+                    e.currentTarget.style.backgroundColor = "#fff";
+                  }}
+                >
+                  もっと見る
+                </button>
+              </div>
             )}
-          </main>
+          </>
         )}
       </div>
 
@@ -169,9 +214,7 @@ export default function Home() {
                   </h3>
                   <div className="furniture-list-simple" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                     {currentRoom.items.map((item, index) => {
-                      // ここでリンクスタイルを判定
                       const styleInfo = getLinkStyle(item.url);
-
                       return (
                         <a
                           key={index}
@@ -219,7 +262,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* フッター追加 */}
+      {/* フッター */}
       <footer style={{ marginTop: "60px", padding: "40px 20px", textAlign: "center", borderTop: "1px solid #eaeaea", color: "#666", fontSize: "12px" }}>
         <p>&copy; {new Date().getFullYear()} ひとへやLab</p>
         <p style={{ marginTop: "10px", opacity: 0.8 }}>※当サイトはアフィリエイト広告（楽天アフィリエイト等）を利用しています。</p>
