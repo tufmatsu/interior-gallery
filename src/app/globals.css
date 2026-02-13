@@ -23,6 +23,8 @@
   padding: 0;
   font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  /* スマホでタップ時の青背景を消す */
 }
 
 body {
@@ -62,6 +64,7 @@ button {
   align-items: center;
   padding: 0 20px;
   z-index: 1000;
+  transition: transform 0.3s;
 }
 
 .logo {
@@ -85,12 +88,14 @@ button {
 .hero {
   margin-bottom: 40px;
   text-align: center;
-  padding: 40px 0;
+  padding: 60px 0 40px;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .hero h1 {
   font-size: 24px;
   margin-bottom: 10px;
+  letter-spacing: 0.05em;
 }
 
 .hero p {
@@ -102,7 +107,30 @@ button {
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+  gap: 32px 24px;
+}
+
+/* Fade Up Animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* ルームカード */
@@ -110,23 +138,55 @@ button {
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: #fff;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s;
   cursor: pointer;
   border: 1px solid transparent;
+  /* 初回表示アニメーション */
+  animation: fadeUp 0.6s ease-out backwards;
+}
+
+/* 順番に表示させる遅延設定 */
+.room-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.room-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.room-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.room-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.room-card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.room-card:nth-child(6) {
+  animation-delay: 0.6s;
 }
 
 .room-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-card);
-  border-color: var(--border);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.room-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s;
 }
 
 .room-image-wrapper {
   position: relative;
   padding-top: 66.6%;
-  /* 3:2 Aspect Ratio */
+  /* 3:2 */
   background-color: var(--bg-gray);
   overflow: hidden;
+  border-radius: var(--radius-lg);
 }
 
 .room-image {
@@ -135,11 +195,11 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .room-card:hover .room-image {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .room-info {
@@ -148,17 +208,19 @@ button {
 
 .room-title {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 700;
   margin-bottom: 6px;
-  line-height: 1.4;
+  line-height: 1.5;
+  color: var(--text-main);
 }
 
 .room-meta {
-  font-size: 12px;
-  color: var(--text-sub);
+  font-size: 13px;
+  color: var(--primary);
   display: flex;
   align-items: center;
   gap: 8px;
+  font-weight: 500;
 }
 
 /* 詳細モーダル */
@@ -168,14 +230,15 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   z-index: 2000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
+  backdrop-filter: blur(4px);
 }
 
 .modal.active {
@@ -187,24 +250,24 @@ button {
   background: #fff;
   width: 100%;
   max-width: 900px;
-  height: 90vh;
+  height: auto;
   max-height: 90vh;
-  border-radius: var(--radius-lg);
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
-  transform: translateY(20px);
-  transition: transform 0.3s;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
 .modal.active .modal-content {
-  transform: translateY(0);
+  transform: scale(1) translateY(0);
 }
 
 .modal-header {
-  padding: 16px 20px;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
@@ -216,230 +279,137 @@ button {
 .modal-title {
   font-weight: 700;
   font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .close-btn {
-  font-size: 24px;
+  font-size: 28px;
   color: var(--text-sub);
-  padding: 4px;
-  line-height: 1;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
 }
 
 .close-btn:hover {
+  background: var(--bg-gray);
   color: var(--text-main);
 }
 
 .modal-body {
   flex: 1;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #ddd transparent;
+  overscroll-behavior: contain;
 }
 
-/* スライダー部分 */
 .slider-container {
   position: relative;
   background: var(--bg-gray);
   width: 100%;
-  height: 50vh;
-  /* 高さ固定 */
+  height: auto;
+  aspect-ratio: 16/9;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
 }
 
 .detail-hero {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  display: block;
-}
-
-.slider-nav-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.8);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: #333;
-  cursor: pointer;
-  transition: background 0.2s;
-  z-index: 5;
-}
-
-.slider-nav-btn:hover {
-  background: #fff;
-}
-
-.slider-prev {
-  left: 20px;
-}
-
-.slider-next {
-  right: 20px;
-}
-
-/* サムネイルリスト */
-.thumbnail-container {
-  padding: 10px 20px;
-  background: #fff;
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  white-space: nowrap;
-  scrollbar-width: none;
-  /* Firefoxスクロールバー非表示 */
-}
-
-.thumbnail-container::-webkit-scrollbar {
-  display: none;
-}
-
-/* Chrome非表示 */
-
-.thumbnail-list {
-  display: inline-flex;
-  gap: 10px;
-}
-
-.thumbnail-item {
-  width: 60px;
-  height: 60px;
-  border-radius: 6px;
-  overflow: hidden;
-  cursor: pointer;
-  border: 2px solid transparent;
-  opacity: 0.6;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.thumbnail-item.active {
-  border-color: var(--primary);
-  opacity: 1;
-}
-
-.thumbnail-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 
 .detail-info {
-  padding: 30px;
+  padding: 30px 40px;
 }
 
 .detail-description {
   font-size: 15px;
-  line-height: 1.6;
+  line-height: 1.8;
   color: var(--text-main);
   margin-bottom: 40px;
-  max-width: 700px;
+  white-space: pre-wrap;
+  /* 改行を反映 */
 }
 
-/* 家具リスト */
-.furniture-section h3 {
-  font-size: 18px;
-  margin-bottom: 20px;
-  font-weight: 700;
+/* Loading Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s ease-in-out infinite;
+  margin: 40px auto;
 }
 
-.furniture-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 16px;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.furniture-item {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  transition: border-color 0.2s;
-  text-align: left;
-  background: #fff;
-  display: block;
-  /* リンクとして動作させるため */
-}
-
-.furniture-item:hover {
-  border-color: var(--primary);
-}
-
-.furniture-img-wrapper {
-  position: relative;
-  padding-top: 100%;
-  /* square */
-  background: var(--bg-gray);
-}
-
-.furniture-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  padding: 10px;
-}
-
-.furniture-info {
-  padding: 10px;
-}
-
-.furniture-brand {
-  font-size: 11px;
-  color: var(--text-sub);
-  margin-bottom: 2px;
-  font-weight: 700;
-}
-
-.furniture-name {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.4;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.furniture-price {
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.buy-now-tag {
-  display: inline-block;
-  font-size: 10px;
-  background: var(--bg-gray);
-  color: var(--text-sub);
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-top: 4px;
-}
-
+/* スマホ最適化 (Mobile) */
 @media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  /* スマホでは1列表示で大きく見せる */
   .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .room-card:hover {
+    transform: none;
+    /* スマホではホバー効果を無効化 */
+  }
+
+  /* モーダルをフルスクリーン＆下からスライド */
+  .modal {
+    align-items: flex-end;
+    /* 下寄せ */
   }
 
   .modal-content {
-    border-radius: 0;
-    height: 100vh;
-    max-height: 100vh;
+    border-radius: 20px 20px 0 0;
+    /* 上だけ角丸 */
+    height: 90vh;
+    /* 高さ確保 */
+    max-height: 90vh;
+    width: 100%;
+    transform: translateY(100%);
+    /* 初期位置は画面外（下） */
   }
 
-  .furniture-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .modal.active .modal-content {
+    transform: translateY(0);
+    /* 下からニュッと出てくる */
   }
 
   .slider-container {
-    height: 40vh;
+    aspect-ratio: 1/1;
+    /* スマホでは正方形に近く */
+    padding: 0;
+    margin-bottom: 20px;
+  }
+
+  .detail-hero {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: none;
+  }
+
+  .detail-info {
+    padding: 0 20px 40px;
   }
 }

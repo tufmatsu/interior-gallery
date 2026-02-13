@@ -108,7 +108,7 @@ export default function Home() {
         </section>
 
         {isLoading ? (
-          <div style={{ textAlign: "center", padding: "40px" }}>Loading...</div>
+          <div className="spinner"></div>
         ) : (
           <>
             <main className="gallery-grid">
