@@ -1,15 +1,19 @@
 // Edge Runtime 対応版 - @notionhq/client を使わず、直接 fetch で Notion API を呼ぶ
 
-const NOTION_API_KEY = process.env.NOTION_API_KEY;
-const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;
-
 export const getRooms = async () => {
+  // Edge Runtime では関数内で process.env を読む必要がある
+  const NOTION_API_KEY = process.env.NOTION_API_KEY;
+  const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;
+
   if (!NOTION_DATABASE_ID) {
-    throw new Error("NOTION_DATABASE_ID is not defined");
+    console.error("NOTION_DATABASE_ID is not defined");
+    return [];
   }
   if (!NOTION_API_KEY) {
-    throw new Error("NOTION_API_KEY is not defined");
+    console.error("NOTION_API_KEY is not defined");
+    return [];
   }
+
 
   try {
     const response = await fetch(
