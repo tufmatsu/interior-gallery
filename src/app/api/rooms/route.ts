@@ -1,31 +1,81 @@
 import { NextResponse } from "next/server";
-import { getRooms } from "@/lib/notion";
 
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-    try {
-        // デバッグ: 環境変数が読めているか確認
-        const hasApiKey = !!process.env.NOTION_API_KEY;
-        const hasDbId = !!process.env.NOTION_DATABASE_ID;
+    const NOTION_API_KEY = process.env.NOTION_API_KEY;
+    const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
-        if (!hasApiKey || !hasDbId) {
+    // デバッグ: 環境変数の確認
+    if (!NOTION_API_KEY || !NOTION_DATABASE_ID) {
+        return NextResponse.json({
+            error: "Missing env vars",
+            hasApiKey: !!NOTION_API_KEY,
+            hasDbId: !!NOTION_DATABASE_ID,
+        }, { status: 500 });
+    }
+
+    try {
+        // Notion APIを直接呼んで、生のレスポンスを確認
+        const response = await fetch(
+            `https://api.notion.com/v1/databases/${NOTION_DATABASE_ID}/query`,
+            {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${NOTION_API_KEY}`,
+                    "Content-Type": "application/json",
+                    "Notion-Version": "2022-06-28",
+                },
+                body: JSON.stringify({
+                    sorts: [{ property: "Name", direction: "ascending" }],
+                }),
+            }
+        );
+
+        const data = await response.json();
+
+        // APIエラーの場合、そのまま返す
+        if (!response.ok) {
             return NextResponse.json({
-                error: "Missing environment variables",
-                hasApiKey,
-                hasDbId,
-                envKeys: Object.keys(process.env).filter(k => k.includes("NOTION")),
+                error: "Notion API error",
+                status: response.status,
+                notionResponse: data,
             }, { status: 500 });
         }
 
-        const rooms = await getRooms();
+        // 成功：データを整形して返す
+        const rooms = data.results.map((page: any) => {
+            const name = page.properties.Name?.title?.[0]?.plain_text || "No Title";
+            const description = page.properties.Description?.rich_text?.[0]?.plain_text || "";
+            const slug = page.properties.Slug?.rich_text?.[0]?.plain_text || "";
+
+            let imageUrl = "";
+            if (page.properties.Image?.files?.length > 0) {
+                const file = page.properties.Image.files[0];
+                imageUrl = file.file?.url || file.external?.url || "";
+            }
+
+            const itemsText = page.properties.Items?.rich_text?.[0]?.plain_text || "";
+            const items = itemsText
+                .split("\n")
+                .filter((line: string) => line.trim() !== "")
+                .map((line: string) => {
+                    const parts = line.trim().split(/\s+/);
+                    const url = parts.pop() || "";
+                    const itemName = parts.join(" ") || "Link";
+                    return { name: itemName, url };
+                });
+
+            return { id: page.id, name, description, slug, imageUrl, items };
+        });
+
         return NextResponse.json(rooms);
     } catch (error: any) {
-        console.error("API Error:", error);
-        return NextResponse.json(
-            { error: "Failed to fetch rooms", message: error?.message || "Unknown error" },
-            { status: 500 }
-        );
+        return NextResponse.json({
+            error: "Exception",
+            message: error?.message || "Unknown",
+            stack: error?.stack || "",
+        }, { status: 500 });
     }
 }
