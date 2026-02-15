@@ -130,21 +130,50 @@ export default function Home() {
       </header>
 
       <div className="container">
-        {/* PR表記 (位置変更: トップへ) */}
-        <div style={{
-          marginBottom: "20px",
-          padding: "8px",
-          backgroundColor: "#f5f5f5",
-          color: "#666",
-          fontSize: "12px",
+        <section className="hero" style={{
           textAlign: "center",
-          borderRadius: "4px"
+          marginTop: "40px",
+          marginBottom: "60px",
+          padding: "40px 20px",
+          backgroundColor: "#fff",
+          borderRadius: "16px",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.03)"
         }}>
-          本ページはプロモーションが含まれています
-        </div>
-        <section className="hero">
-          <h1>ひとへやLabの空想コレクション</h1>
-          <p>「空想ひとりぐらし」のアーカイブ。</p>
+          <h1 style={{ fontSize: "28px", fontWeight: "bold", color: "#333", marginBottom: "10px", letterSpacing: "1px" }}>ひとへやLabの空想コレクション</h1>
+          <p style={{ fontSize: "14px", color: "#0288d1", fontWeight: "bold", marginBottom: "30px", letterSpacing: "1px" }}>「空想ひとりぐらし」のアーカイブ。</p>
+
+          <div style={{ maxWidth: "600px", margin: "0 auto", lineHeight: "1.8", color: "#555", fontSize: "15px" }}>
+            <p style={{ marginBottom: "15px" }}>
+              新生活を機にインテリアにはまった<strong style={{ color: "#333", background: "linear-gradient(transparent 60%, #bae6fd 60%)" }}>ひとへやLab研究員</strong>が、<br className="pc-only" />
+              住んでみたい部屋をお届けします。<br />
+              お部屋づくりの辞書としてお使いください！
+            </p>
+          </div>
+
+          {/* プロモーション表記（やわらかい表現で配置） */}
+          <div style={{
+            marginTop: "30px",
+            maxWidth: "580px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            padding: "15px",
+            backgroundColor: "#f9fafb",
+            borderRadius: "8px",
+            fontSize: "12px",
+            color: "#777",
+            textAlign: "left",
+            border: "1px solid #eee"
+          }}>
+            <p style={{ fontWeight: "bold", marginBottom: "5px", color: "#666", display: "flex", alignItems: "center", gap: "6px" }}>
+              <span style={{ display: "inline-block", width: "4px", height: "14px", backgroundColor: "#ccc", borderRadius: "2px" }}></span>
+              当サイトの運営について
+            </p>
+            <p style={{ lineHeight: "1.6" }}>
+              ※当サイトにはアフィリエイトリンク（楽天アフィリエイト等）が含まれます。<br />
+              リンク先で商品を購入いただくと編集部に収益が発生することがあります。<br />
+              もし望まれない方は、商品名を検索して別のサイト等でお買い物を楽しんでくださいませ～🌿
+            </p>
+          </div>
         </section>
 
         {isLoading ? (
