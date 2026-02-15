@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 // import Image from "next/image"; // 今回は使わない
 
 type Item = {
@@ -49,6 +49,15 @@ export default function Home() {
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1); // 現在のページ数
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const scrollSlider = (direction: "left" | "right") => {
+    if (sliderRef.current) {
+      const { clientWidth } = sliderRef.current;
+      const scrollAmount = direction === "left" ? -clientWidth : clientWidth;
+      sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -193,66 +202,127 @@ export default function Home() {
           </header>
 
           <div className="modal-body">
-            <div className="slider-container" style={{
-              display: "flex",
-              overflowX: "auto",
-              scrollSnapType: "x mandatory",
-              gap: "0", // 隙間なくす
-              width: "100%", // 親要素の幅いっぱいに
-              paddingBottom: "10px",
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-            }}>
-              {currentRoom?.images && currentRoom.images.length > 0 ? (
-                currentRoom.images.map((img, idx) => (
-                  <div
-                    key={idx}
+            {/* スライダーコンテナ（相対配置でボタンを含む） */}
+            <div style={{ position: "relative", width: "100%", overflow: "hidden" }}>
+              <div
+                ref={sliderRef}
+                className="slider-container"
+                style={{
+                  display: "flex",
+                  overflowX: "auto",
+                  scrollSnapType: "x mandatory",
+                  gap: "0",
+                  width: "100%",
+                  paddingBottom: "10px",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                  scrollBehavior: "smooth"
+                }}>
+                {currentRoom?.images && currentRoom.images.length > 0 ? (
+                  currentRoom.images.map((img, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        flex: "0 0 100%",
+                        minWidth: "100%",
+                        width: "100%",
+                        scrollSnapAlign: "center", // 中央揃え
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "auto",
+                        maxHeight: "60vh",
+                        aspectRatio: "1/1", // 正方形に近づける（任意）
+                        backgroundColor: "#f9f9f9" // 画像がない部分の背景
+                      }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={img}
+                        alt={`${currentRoom.name} - ${idx + 1}`}
+                        className="detail-hero"
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "100%",
+                          width: "auto",
+                          height: "auto",
+                          objectFit: "contain",
+                          display: "block"
+                        }}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  currentRoom?.imageUrl && (
+                    <div style={{ width: "100%", display: "flex", justifyContent: "center", backgroundColor: "#f9f9f9", maxHeight: "60vh" }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={currentRoom.imageUrl}
+                        alt={currentRoom.name}
+                        className="detail-hero"
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "100%",
+                          width: "auto",
+                          height: "auto",
+                          objectFit: "contain"
+                        }}
+                      />
+                    </div>
+                  )
+                )}
+              </div>
+
+              {/* PC用ナビゲーションボタン (画像が2枚以上ある場合のみ) */}
+              {currentRoom?.images && currentRoom.images.length > 1 && (
+                <>
+                  <button
+                    className="slider-nav-btn prev"
+                    onClick={() => scrollSlider("left")}
                     style={{
-                      flex: "0 0 100%", // 必ず親の幅いっぱい
-                      minWidth: "100%", // 縮小防止
-                      width: "100%",
-                      scrollSnapAlign: "start", // 左端合わせ
-                      display: "flex",
+                      position: "absolute",
+                      top: "50%",
+                      left: "10px",
+                      transform: "translateY(-50%)",
+                      backgroundColor: "rgba(255,255,255,0.8)",
+                      border: "none",
+                      borderRadius: "50%",
+                      width: "40px",
+                      height: "40px",
+                      cursor: "pointer",
+                      display: "none", // デフォルト非表示（CSSでPCのみ表示）
                       justifyContent: "center",
                       alignItems: "center",
-                      height: "auto",
-                      maxHeight: "60vh", // 高さは制限
-                      position: "relative"
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                      zIndex: 10
                     }}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={img}
-                      alt={`${currentRoom.name} - ${idx + 1}`}
-                      className="detail-hero"
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "100%",
-                        width: "auto",
-                        height: "auto",
-                        objectFit: "contain",
-                        borderRadius: "8px",
-                        display: "block"
-                      }}
-                    />
-                  </div>
-                ))
-              ) : (
-                currentRoom?.imageUrl && (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={currentRoom.imageUrl}
-                    alt={currentRoom.name}
-                    className="detail-hero"
+                    &lt;
+                  </button>
+                  <button
+                    className="slider-nav-btn next"
+                    onClick={() => scrollSlider("right")}
                     style={{
-                      width: "100%",
-                      height: "auto",
-                      maxHeight: "60vh",
-                      objectFit: "contain",
-                      borderRadius: "8px"
+                      position: "absolute",
+                      top: "50%",
+                      right: "10px",
+                      transform: "translateY(-50%)",
+                      backgroundColor: "rgba(255,255,255,0.8)",
+                      border: "none",
+                      borderRadius: "50%",
+                      width: "40px",
+                      height: "40px",
+                      cursor: "pointer",
+                      display: "none", // デフォルト非表示（CSSでPCのみ表示）
+                      justifyContent: "center",
+                      alignItems: "center",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                      zIndex: 10
                     }}
-                  />
-                )
+                  >
+                    &gt;
+                  </button>
+                </>
               )}
             </div>
 
