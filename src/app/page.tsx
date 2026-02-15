@@ -49,6 +49,7 @@ export default function Home() {
   const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1); // 現在のページ数
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // 現在の画像のインデックス
   const sliderRef = useRef<HTMLDivElement>(null);
 
   const scrollSlider = (direction: "left" | "right") => {
@@ -56,6 +57,14 @@ export default function Home() {
       const { clientWidth } = sliderRef.current;
       const scrollAmount = direction === "left" ? -clientWidth : clientWidth;
       sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
+  const handleScroll = () => {
+    if (sliderRef.current) {
+      const { scrollLeft, clientWidth } = sliderRef.current;
+      const newIndex = Math.round(scrollLeft / clientWidth);
+      setCurrentImageIndex(newIndex);
     }
   };
 
@@ -87,6 +96,7 @@ export default function Home() {
 
   const openModal = (room: Room) => {
     setCurrentRoom(room);
+    setCurrentImageIndex(0);
     document.body.style.overflow = "hidden";
   };
 
@@ -207,6 +217,7 @@ export default function Home() {
               <div
                 ref={sliderRef}
                 className="slider-container"
+                onScroll={handleScroll}
                 style={{
                   display: "flex",
                   overflowX: "auto",
@@ -272,6 +283,37 @@ export default function Home() {
                   )
                 )}
               </div>
+
+              {/* ページネーションドット (画像が2枚以上ある場合のみ) */}
+              {currentRoom?.images && currentRoom.images.length > 1 && (
+                <div style={{
+                  position: "absolute",
+                  bottom: "15px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  display: "flex",
+                  gap: "8px",
+                  zIndex: 20,
+                  padding: "6px 12px",
+                  borderRadius: "12px",
+                  backgroundColor: "rgba(255, 255, 255, 0.6)",
+                  backdropFilter: "blur(4px)"
+                }}>
+                  {currentRoom.images.map((_, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        width: "8px",
+                        height: "8px",
+                        borderRadius: "50%",
+                        backgroundColor: idx === currentImageIndex ? "#35c5f0" : "rgba(0, 0, 0, 0.3)",
+                        transition: "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+                        transform: idx === currentImageIndex ? "scale(1.2)" : "scale(1)"
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
 
               {/* PC用ナビゲーションボタン (画像が2枚以上ある場合のみ) */}
               {currentRoom?.images && currentRoom.images.length > 1 && (
