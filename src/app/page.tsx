@@ -52,6 +52,13 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0); // 現在の画像のインデックス
   const sliderRef = useRef<HTMLDivElement>(null);
 
+  // モーダルを開いたときや部屋が変わったときにスクロール位置をリセット
+  useEffect(() => {
+    if (currentRoom && sliderRef.current) {
+      sliderRef.current.scrollTo({ left: 0, behavior: "instant" });
+    }
+  }, [currentRoom]);
+
   const scrollSlider = (direction: "left" | "right") => {
     if (sliderRef.current) {
       const { clientWidth } = sliderRef.current;
@@ -220,6 +227,7 @@ export default function Home() {
                 onScroll={handleScroll}
                 style={{
                   display: "flex",
+                  justifyContent: "flex-start", // 左寄せを強制
                   overflowX: "auto",
                   scrollSnapType: "x mandatory",
                   gap: "0",
