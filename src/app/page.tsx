@@ -399,9 +399,8 @@ export default function Home() {
                   {/* 1. Pick Up! セクション */}
                   {currentRoom?.picks && currentRoom.picks.length > 0 && (
                     <div className="pickup-section" style={{ marginBottom: "25px", padding: "20px", backgroundColor: "#f0f9ff", borderRadius: "12px", border: "1px solid #bae6fd" }}>
-                      <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "15px", color: "#0288d1", display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span style={{ backgroundColor: "#0288d1", color: "#fff", padding: "2px 8px", borderRadius: "10px", fontSize: "12px" }}>Recommend</span>
-                        Pick Up!
+                      <h4 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "15px", display: "flex", alignItems: "center" }}>
+                        <span style={{ backgroundColor: "#0288d1", color: "#fff", padding: "4px 12px", borderRadius: "20px", fontSize: "14px" }}>Pick Up!</span>
                       </h4>
                       <div className="furniture-list-simple" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                         {currentRoom.picks.map((item, index) => {
