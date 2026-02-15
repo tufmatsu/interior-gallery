@@ -224,7 +224,9 @@ export default function Home() {
                   scrollSnapType: "x mandatory",
                   gap: "0",
                   width: "100%",
-                  paddingBottom: "10px",
+                  height: "auto",
+                  padding: "0", // パディングをリセット
+                  aspectRatio: "unset", // アスペクト比固定を解除
                   scrollbarWidth: "none",
                   msOverflowStyle: "none",
                   scrollBehavior: "smooth"
@@ -237,14 +239,13 @@ export default function Home() {
                         flex: "0 0 100%",
                         minWidth: "100%",
                         width: "100%",
-                        scrollSnapAlign: "center", // 中央揃え
+                        scrollSnapAlign: "center",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        height: "auto",
-                        maxHeight: "60vh",
-                        aspectRatio: "1/1", // 正方形に近づける（任意）
-                        backgroundColor: "#f9f9f9" // 画像がない部分の背景
+                        height: "60vh", // 高さを固定して安定させる（スマホ・PC両対応）
+                        backgroundColor: "#f9f9f9",
+                        position: "relative"
                       }}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -258,7 +259,8 @@ export default function Home() {
                           width: "auto",
                           height: "auto",
                           objectFit: "contain",
-                          display: "block"
+                          display: "block",
+                          margin: "0 auto"
                         }}
                       />
                     </div>
