@@ -132,48 +132,61 @@ export default function Home() {
       <div className="container">
         <section className="hero" style={{
           textAlign: "center",
-          marginTop: "40px",
-          marginBottom: "60px",
-          padding: "40px 20px",
+          marginTop: "20px", // マージン縮小
+          marginBottom: "30px", // マージン縮小
+          padding: "20px 15px", // パディング縮小
           backgroundColor: "#fff",
-          borderRadius: "16px",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.03)"
+          borderRadius: "12px",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.03)"
         }}>
-          <h1 style={{ fontSize: "28px", fontWeight: "bold", color: "#333", marginBottom: "10px", letterSpacing: "1px" }}>ひとへやLabの空想コレクション</h1>
-          <p style={{ fontSize: "14px", color: "#0288d1", fontWeight: "bold", marginBottom: "30px", letterSpacing: "1px" }}>「空想ひとりぐらし」のアーカイブ。</p>
+          <h1 style={{ fontSize: "22px", fontWeight: "bold", color: "#333", marginBottom: "5px", letterSpacing: "1px" }}>ひとへやLabの空想コレクション</h1>
+          <p style={{ fontSize: "12px", color: "#0288d1", fontWeight: "bold", marginBottom: "15px", letterSpacing: "1px" }}>「空想ひとりぐらし」のアーカイブ。</p>
 
-          <div style={{ maxWidth: "600px", margin: "0 auto", lineHeight: "1.8", color: "#555", fontSize: "15px" }}>
-            <p style={{ marginBottom: "15px" }}>
+          <div style={{ maxWidth: "600px", margin: "0 auto", lineHeight: "1.6", color: "#555", fontSize: "13px" }}>
+            <p style={{ marginBottom: "10px" }}>
               新生活を機にインテリアにはまった<strong style={{ color: "#333", background: "linear-gradient(transparent 60%, #bae6fd 60%)" }}>ひとへやLab研究員</strong>が、<br className="pc-only" />
-              住んでみたい部屋をお届けします。<br />
-              お部屋づくりの辞書としてお使いください！
+              住んでみたい部屋をお届けします。お部屋づくりの辞書としてお使いください！
             </p>
           </div>
 
-          {/* プロモーション表記（やわらかい表現で配置） */}
-          <div style={{
-            marginTop: "30px",
+          {/* プロモーション表記（アコーディオン化してコンパクトに） */}
+          <details style={{
+            marginTop: "15px",
             maxWidth: "580px",
             marginLeft: "auto",
             marginRight: "auto",
-            padding: "15px",
             backgroundColor: "#f9fafb",
-            borderRadius: "8px",
-            fontSize: "12px",
+            borderRadius: "6px",
+            fontSize: "11px",
             color: "#777",
             textAlign: "left",
-            border: "1px solid #eee"
+            border: "1px solid #eee",
+            overflow: "hidden"
           }}>
-            <p style={{ fontWeight: "bold", marginBottom: "5px", color: "#666", display: "flex", alignItems: "center", gap: "6px" }}>
-              <span style={{ display: "inline-block", width: "4px", height: "14px", backgroundColor: "#ccc", borderRadius: "2px" }}></span>
-              当サイトの運営について
-            </p>
-            <p style={{ lineHeight: "1.6" }}>
-              ※当サイトにはアフィリエイトリンク（楽天アフィリエイト等）が含まれます。<br />
-              リンク先で商品を購入いただくと編集部に収益が発生することがあります。<br />
-              もし望まれない方は、商品名を検索して別のサイト等でお買い物を楽しんでくださいませ～🌿
-            </p>
-          </div>
+            <summary style={{
+              padding: "8px 12px",
+              cursor: "pointer",
+              fontWeight: "bold",
+              color: "#888",
+              listStyle: "none", // ▼を消す
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "5px",
+              fontSize: "11px"
+            }}>
+              <span style={{ borderBottom: "1px dotted #999" }}>当サイトの運営・広告について</span>
+              <span style={{ fontSize: "10px", transform: "rotate(90deg)" }}>›</span>
+            </summary>
+
+            <div style={{ padding: "10px 15px 15px", borderTop: "1px solid #eee", lineHeight: "1.5" }}>
+              <p>
+                ※当サイトにはアフィリエイトリンク（楽天アフィリエイト等）が含まれます。<br />
+                リンク先で商品を購入いただくと編集部に収益が発生することがあります。<br />
+                もし望まれない方は、商品名を検索して別のサイト等でお買い物を楽しんでくださいませ～🌿
+              </p>
+            </div>
+          </details>
         </section>
 
         {isLoading ? (
