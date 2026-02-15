@@ -263,7 +263,7 @@ export default function Home() {
               {currentRoom?.items && currentRoom.items.length > 0 && (
                 <div className="furniture-section" style={{ marginTop: "30px" }}>
                   <h3 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "15px" }}>
-                    この部屋のアイテム
+                    参考にしたアイテム
                   </h3>
                   <div className="furniture-list-simple" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                     {currentRoom.items.map((item, index) => {
