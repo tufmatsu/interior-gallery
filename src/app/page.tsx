@@ -197,29 +197,38 @@ export default function Home() {
               display: "flex",
               overflowX: "auto",
               scrollSnapType: "x mandatory",
-              gap: "10px",
+              gap: "0", // 隙間なくす
               paddingBottom: "10px",
-              scrollbarWidth: "none",  // Firefox
-              msOverflowStyle: "none", // IE/Edge
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
             }}>
               {currentRoom?.images && currentRoom.images.length > 0 ? (
                 currentRoom.images.map((img, idx) => (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
+                  <div
                     key={idx}
-                    src={img}
-                    alt={`${currentRoom.name} - ${idx + 1}`}
-                    className="detail-hero"
                     style={{
-                      flex: "0 0 100%",
+                      flex: "0 0 100%", // 必ず親の幅いっぱい
                       scrollSnapAlign: "center",
-                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                       height: "auto",
-                      maxHeight: "60vh",
-                      objectFit: "contain",
-                      borderRadius: "8px"
+                      maxHeight: "60vh", // 高さは制限
                     }}
-                  />
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={img}
+                      alt={`${currentRoom.name} - ${idx + 1}`}
+                      className="detail-hero"
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "contain",
+                        borderRadius: "8px"
+                      }}
+                    />
+                  </div>
                 ))
               ) : (
                 currentRoom?.imageUrl && (
