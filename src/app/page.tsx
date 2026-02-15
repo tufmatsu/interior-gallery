@@ -251,9 +251,10 @@ export default function Home() {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        height: "60vh", // 高さを固定して安定させる（スマホ・PC両対応）
+                        height: "60vh", // 高さを固定
                         backgroundColor: "#f9f9f9",
-                        position: "relative"
+                        position: "relative",
+                        overflow: "hidden"
                       }}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -262,31 +263,37 @@ export default function Home() {
                         alt={`${currentRoom.name} - ${idx + 1}`}
                         className="detail-hero"
                         style={{
-                          maxWidth: "100%",
-                          maxHeight: "100%",
-                          width: "auto",
-                          height: "auto",
-                          objectFit: "contain",
-                          display: "block",
-                          margin: "0 auto"
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover", // 枠いっぱいに表示（上下カット）
+                          objectPosition: "center",
+                          display: "block"
                         }}
                       />
                     </div>
                   ))
                 ) : (
                   currentRoom?.imageUrl && (
-                    <div style={{ width: "100%", display: "flex", justifyContent: "center", backgroundColor: "#f9f9f9", maxHeight: "60vh" }}>
+                    <div style={{
+                      width: "100%",
+                      height: "60vh", // 高さ固定
+                      display: "flex",
+                      justifyContent: "center",
+                      backgroundColor: "#f9f9f9",
+                      position: "relative",
+                      overflow: "hidden"
+                    }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={currentRoom.imageUrl}
                         alt={currentRoom.name}
                         className="detail-hero"
                         style={{
-                          maxWidth: "100%",
-                          maxHeight: "100%",
-                          width: "auto",
-                          height: "auto",
-                          objectFit: "contain"
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover", // 枠いっぱいに表示（上下カット）
+                          objectPosition: "center",
+                          display: "block"
                         }}
                       />
                     </div>
