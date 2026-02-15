@@ -3,6 +3,35 @@ import { NextResponse } from "next/server";
 export const runtime = 'edge';
 export const dynamic = 'force-dynamic';
 
+// ヘルパー関数: Rich Text または URL プロパティをパースしてアイテムリストにする
+function parseItems(property: any): { name: string; url: string }[] {
+    if (!property) return [];
+
+    // URL型の場合
+    if (property.type === "url" && property.url) {
+        return [{ name: "Link", url: property.url }];
+    }
+
+    // Rich Text型の場合
+    if (property.type === "rich_text" && property.rich_text?.length > 0) {
+        const textContent = property.rich_text.map((t: any) => t.plain_text).join("");
+        const lines = textContent.split("\n").filter((line: string) => line.trim() !== "");
+        const result = [];
+
+        // 2行ずつペアにする（1行目=商品名、2行目=URL）
+        for (let i = 0; i < lines.length; i += 2) {
+            const name = lines[i]?.trim() || "Link";
+            const url = lines[i + 1]?.trim() || "";
+            // URLっぽい文字列が含まれている場合のみ追加（簡易チェック）
+            if (url && (url.startsWith("http") || url.startsWith("www"))) {
+                result.push({ name, url });
+            }
+        }
+        return result;
+    }
+    return [];
+}
+
 export async function GET() {
     const NOTION_API_KEY = process.env.NOTION_API_KEY;
     const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;
@@ -32,48 +61,27 @@ export async function GET() {
         }
 
         const rooms = data.results.map((page: any) => {
-            const name = page.properties.name?.title?.[0]?.plain_text || "No Title";
-            const description = page.properties.description?.rich_text?.[0]?.plain_text || "";
-            const slug = page.properties.slug?.rich_text?.[0]?.plain_text || "";
+            // プロパティ取得（小文字前提）
+            const props = page.properties;
 
+            const name = props.name?.title?.[0]?.plain_text || "No Title";
+            const description = props.description?.rich_text?.[0]?.plain_text || "";
+            const slug = props.slug?.rich_text?.[0]?.plain_text || "";
+
+            // 画像処理
             let images: string[] = [];
-            if (page.properties.image?.files?.length > 0) {
-                images = page.properties.image.files.map((file: any) =>
+            if (props.image?.files?.length > 0) {
+                images = props.image.files.map((file: any) =>
                     file.file?.url || file.external?.url || ""
                 ).filter((url: string) => url !== "");
             }
             const imageUrl = images.length > 0 ? images[0] : "";
 
-            // items: 複数のプロパティ型に対応
-            const itemsProp = page.properties.items;
-            let items: { name: string; url: string }[] = [];
+            // アイテム処理 (items と picks)
+            const items = parseItems(props.items);
+            const picks = parseItems(props.picks); // 新しいプロパティ
 
-            if (itemsProp) {
-                const propType = itemsProp.type;
-
-                if (propType === "url" && itemsProp.url) {
-                    // URL型: 単一のURLが入っている
-                    items = [{ name: "Link", url: itemsProp.url }];
-                } else if (propType === "rich_text" && itemsProp.rich_text?.length > 0) {
-                    // リッチテキスト型: 2行で1セット（商品名 + URL）
-                    const itemsText = itemsProp.rich_text.map((t: any) => t.plain_text).join("");
-                    const lines = itemsText
-                        .split("\n")
-                        .filter((line: string) => line.trim() !== "");
-
-                    // 2行ずつペアにする（1行目=商品名、2行目=URL）
-                    for (let i = 0; i < lines.length; i += 2) {
-                        const itemName = lines[i]?.trim() || "Link";
-                        const url = lines[i + 1]?.trim() || "";
-                        if (url) {
-                            items.push({ name: itemName, url });
-                        }
-                    }
-                }
-
-            }
-
-            return { id: page.id, name, description, slug, imageUrl, images, items };
+            return { id: page.id, name, description, slug, imageUrl, images, items, picks };
         });
 
         return NextResponse.json(rooms);
