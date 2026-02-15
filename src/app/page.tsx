@@ -144,7 +144,7 @@ export default function Home() {
 
           <div style={{ maxWidth: "600px", margin: "0 auto", lineHeight: "1.6", color: "#555", fontSize: "13px" }}>
             <p style={{ marginBottom: "10px" }}>
-              新生活を機にインテリアにはまった<strong style={{ color: "#333", background: "linear-gradient(transparent 60%, #bae6fd 60%)" }}>ひとへやLab研究員</strong>が、<br className="pc-only" />
+              最近インテリアにハマった<strong style={{ color: "#333", background: "linear-gradient(transparent 60%, #bae6fd 60%)" }}>ひとへやLab研究員</strong>が、<br className="pc-only" />
               住んでみたい部屋をお届けします。お部屋づくりの辞書としてお使いください！
             </p>
           </div>
@@ -175,15 +175,15 @@ export default function Home() {
               gap: "5px",
               fontSize: "11px"
             }}>
-              <span style={{ borderBottom: "1px dotted #999" }}>当サイトの運営・広告について</span>
+              <span style={{ borderBottom: "1px dotted #999" }}>本ページはプロモーションを含みます</span>
               <span style={{ fontSize: "10px", transform: "rotate(90deg)" }}>›</span>
             </summary>
 
             <div style={{ padding: "10px 15px 15px", borderTop: "1px solid #eee", lineHeight: "1.5" }}>
               <p>
-                ※当サイトにはアフィリエイトリンク（楽天アフィリエイト等）が含まれます。<br />
-                リンク先で商品を購入いただくと編集部に収益が発生することがあります。<br />
-                もし望まれない方は、商品名を検索して別のサイト等でお買い物を楽しんでくださいませ～🌿
+                当サイトにはアフィリエイトリンクが含まれます。<br />
+                リンク先で商品を購入いただくと研究員に収益が発生することがあります。<br />
+                もし望まれない方は、商品名を検索して別のサイト等でご購入くださいませ～🌿
               </p>
             </div>
           </details>
