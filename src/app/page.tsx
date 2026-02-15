@@ -14,6 +14,7 @@ type Room = {
   description: string;
   slug: string;
   imageUrl: string;
+  images?: string[]; // 複数画像
   items: Item[]; // 解析済み配列として受け取る
 };
 
@@ -192,14 +193,50 @@ export default function Home() {
           </header>
 
           <div className="modal-body">
-            <div className="slider-container">
-              {currentRoom?.imageUrl && (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={currentRoom.imageUrl}
-                  alt={currentRoom.name}
-                  className="detail-hero"
-                />
+            <div className="slider-container" style={{
+              display: "flex",
+              overflowX: "auto",
+              scrollSnapType: "x mandatory",
+              gap: "10px",
+              paddingBottom: "10px",
+              scrollbarWidth: "none",  // Firefox
+              msOverflowStyle: "none", // IE/Edge
+            }}>
+              {currentRoom?.images && currentRoom.images.length > 0 ? (
+                currentRoom.images.map((img, idx) => (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`${currentRoom.name} - ${idx + 1}`}
+                    className="detail-hero"
+                    style={{
+                      flex: "0 0 100%",
+                      scrollSnapAlign: "center",
+                      width: "100%",
+                      height: "auto",
+                      maxHeight: "60vh",
+                      objectFit: "contain",
+                      borderRadius: "8px"
+                    }}
+                  />
+                ))
+              ) : (
+                currentRoom?.imageUrl && (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={currentRoom.imageUrl}
+                    alt={currentRoom.name}
+                    className="detail-hero"
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      maxHeight: "60vh",
+                      objectFit: "contain",
+                      borderRadius: "8px"
+                    }}
+                  />
+                )
               )}
             </div>
 

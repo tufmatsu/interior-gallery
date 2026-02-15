@@ -36,11 +36,13 @@ export async function GET() {
             const description = page.properties.description?.rich_text?.[0]?.plain_text || "";
             const slug = page.properties.slug?.rich_text?.[0]?.plain_text || "";
 
-            let imageUrl = "";
+            let images: string[] = [];
             if (page.properties.image?.files?.length > 0) {
-                const file = page.properties.image.files[0];
-                imageUrl = file.file?.url || file.external?.url || "";
+                images = page.properties.image.files.map((file: any) =>
+                    file.file?.url || file.external?.url || ""
+                ).filter((url: string) => url !== "");
             }
+            const imageUrl = images.length > 0 ? images[0] : "";
 
             // items: 複数のプロパティ型に対応
             const itemsProp = page.properties.items;
@@ -71,7 +73,7 @@ export async function GET() {
 
             }
 
-            return { id: page.id, name, description, slug, imageUrl, items };
+            return { id: page.id, name, description, slug, imageUrl, images, items };
         });
 
         return NextResponse.json(rooms);
