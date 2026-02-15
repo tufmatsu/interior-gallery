@@ -130,6 +130,18 @@ export default function Home() {
       </header>
 
       <div className="container">
+        {/* PR表記 (位置変更: トップへ) */}
+        <div style={{
+          marginBottom: "20px",
+          padding: "8px",
+          backgroundColor: "#f5f5f5",
+          color: "#666",
+          fontSize: "12px",
+          textAlign: "center",
+          borderRadius: "4px"
+        }}>
+          本ページはプロモーションが含まれています
+        </div>
         <section className="hero">
           <h1>ひとへやLabの空想コレクション</h1>
           <p>「空想ひとりぐらし」のアーカイブ。</p>
@@ -389,6 +401,11 @@ export default function Home() {
             <div className="detail-info">
               <p className="detail-description">{currentRoom?.description}</p>
 
+              {/* 免責事項 (新規追加) */}
+              <p style={{ fontSize: "12px", color: "#888", marginTop: "20px", marginBottom: "10px", lineHeight: "1.5" }}>
+                ※掲載している3Dモデルは実際の製品を参考に作成していますが、細部が異なる場合があります。ご購入の際は各販売サイトの商品詳細をご確認ください。
+              </p>
+
               {/* 家具リストエリア (Pick Up + その他) */}
               {((currentRoom?.items && currentRoom.items.length > 0) || (currentRoom?.picks && currentRoom.picks.length > 0)) && (
                 <div className="furniture-section" style={{ marginTop: "40px" }}>
@@ -505,7 +522,6 @@ export default function Home() {
       {/* フッター */}
       <footer style={{ marginTop: "60px", padding: "40px 20px", textAlign: "center", borderTop: "1px solid #eaeaea", color: "#666", fontSize: "12px" }}>
         <p>&copy; {new Date().getFullYear()} ひとへやLab</p>
-        <p style={{ marginTop: "10px", opacity: 0.8 }}>※当サイトはアフィリエイト広告（楽天アフィリエイト等）を利用しています。</p>
       </footer>
     </>
   );
