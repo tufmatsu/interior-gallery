@@ -198,6 +198,7 @@ export default function Home() {
               overflowX: "auto",
               scrollSnapType: "x mandatory",
               gap: "0", // 隙間なくす
+              width: "100%", // 親要素の幅いっぱいに
               paddingBottom: "10px",
               scrollbarWidth: "none",
               msOverflowStyle: "none",
@@ -208,12 +209,15 @@ export default function Home() {
                     key={idx}
                     style={{
                       flex: "0 0 100%", // 必ず親の幅いっぱい
-                      scrollSnapAlign: "center",
+                      minWidth: "100%", // 縮小防止
+                      width: "100%",
+                      scrollSnapAlign: "start", // 左端合わせ
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                       height: "auto",
                       maxHeight: "60vh", // 高さは制限
+                      position: "relative"
                     }}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -224,8 +228,11 @@ export default function Home() {
                       style={{
                         maxWidth: "100%",
                         maxHeight: "100%",
+                        width: "auto",
+                        height: "auto",
                         objectFit: "contain",
-                        borderRadius: "8px"
+                        borderRadius: "8px",
+                        display: "block"
                       }}
                     />
                   </div>
