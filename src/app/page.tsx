@@ -389,57 +389,6 @@ export default function Home() {
             <div className="detail-info">
               <p className="detail-description">{currentRoom?.description}</p>
 
-              {/* Pick Up! セクション */}
-              {currentRoom?.picks && currentRoom.picks.length > 0 && (
-                <div className="pickup-section" style={{ marginTop: "30px", padding: "15px", backgroundColor: "#fffaf0", borderRadius: "8px", border: "1px solid #ffecb3" }}>
-                  <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "10px", color: "#ff9800", display: "flex", alignItems: "center", gap: "6px" }}>
-                    <span style={{ fontSize: "18px" }}>★</span> Pick Up!
-                  </h3>
-                  <div className="furniture-list-simple" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                    {currentRoom.picks.map((item, index) => {
-                      const styleInfo = getLinkStyle(item.url);
-                      return (
-                        <a
-                          key={index}
-                          href={item.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="furniture-link-btn"
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            padding: "8px 16px",
-                            backgroundColor: "#fff",
-                            border: "1px solid #ffcc80", // 枠線を強調
-                            borderRadius: "4px",
-                            fontSize: "14px",
-                            color: "#333",
-                            textDecoration: "none",
-                            transition: "all 0.2s",
-                            boxShadow: "0 2px 4px rgba(255, 152, 0, 0.15)"
-                          }}
-                          onMouseOver={(e) => {
-                            e.currentTarget.style.borderColor = styleInfo.hoverColor;
-                            e.currentTarget.style.color = styleInfo.hoverColor;
-                            e.currentTarget.style.backgroundColor = styleInfo.hoverBg;
-                          }}
-                          onMouseOut={(e) => {
-                            e.currentTarget.style.borderColor = "#ffcc80";
-                            e.currentTarget.style.color = "#333";
-                            e.currentTarget.style.backgroundColor = "#fff";
-                          }}
-                        >
-                          <span style={{ fontWeight: 600 }}>{item.name}</span>
-                          <span style={{ marginLeft: "8px", fontSize: "11px", color: "#666" }}>
-                            {styleInfo.text}
-                          </span>
-                        </a>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
               {/* 家具リスト表示エリア */}
               {currentRoom?.items && currentRoom.items.length > 0 && (
                 <div className="furniture-section" style={{ marginTop: "30px" }}>
@@ -481,6 +430,60 @@ export default function Home() {
                           }}
                         >
                           <span style={{ fontWeight: 500 }}>{item.name}</span>
+                          <span style={{ marginLeft: "8px", fontSize: "11px", color: "#666" }}>
+                            {styleInfo.text}
+                          </span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Pick Up! セクション (デザイン修正・位置移動) */}
+              {currentRoom?.picks && currentRoom.picks.length > 0 && (
+                <div className="pickup-section" style={{ marginTop: "40px", padding: "20px", backgroundColor: "#f0f9ff", borderRadius: "12px", border: "1px solid #bae6fd" }}>
+                  <h3 style={{ fontSize: "16px", fontWeight: "bold", marginBottom: "15px", color: "#0288d1", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span style={{ backgroundColor: "#0288d1", color: "#fff", padding: "2px 8px", borderRadius: "10px", fontSize: "12px" }}>Recommend</span>
+                    Pick Up!
+                  </h3>
+                  <div className="furniture-list-simple" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                    {currentRoom.picks.map((item, index) => {
+                      const styleInfo = getLinkStyle(item.url);
+                      return (
+                        <a
+                          key={index}
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="furniture-link-btn"
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            padding: "10px 20px", // 少し大きめに
+                            backgroundColor: "#fff",
+                            border: "1px solid #bae6fd", // 薄い水色枠
+                            borderRadius: "6px",
+                            fontSize: "15px", // 少し大きく
+                            color: "#333",
+                            textDecoration: "none",
+                            transition: "all 0.2s",
+                            boxShadow: "0 2px 5px rgba(2, 136, 209, 0.1)"
+                          }}
+                          onMouseOver={(e) => {
+                            e.currentTarget.style.borderColor = styleInfo.hoverColor;
+                            e.currentTarget.style.color = styleInfo.hoverColor;
+                            e.currentTarget.style.backgroundColor = styleInfo.hoverBg;
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                          }}
+                          onMouseOut={(e) => {
+                            e.currentTarget.style.borderColor = "#bae6fd";
+                            e.currentTarget.style.color = "#333";
+                            e.currentTarget.style.backgroundColor = "#fff";
+                            e.currentTarget.style.transform = "translateY(0)";
+                          }}
+                        >
+                          <span style={{ fontWeight: 600 }}>{item.name}</span>
                           <span style={{ marginLeft: "8px", fontSize: "11px", color: "#666" }}>
                             {styleInfo.text}
                           </span>
