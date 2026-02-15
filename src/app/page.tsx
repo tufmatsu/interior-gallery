@@ -443,11 +443,6 @@ export default function Home() {
             <div className="detail-info">
               <p className="detail-description">{currentRoom?.description}</p>
 
-              {/* 免責事項 (新規追加) */}
-              <p style={{ fontSize: "12px", color: "#888", marginTop: "20px", marginBottom: "10px", lineHeight: "1.5" }}>
-                ※掲載している3Dモデルは実際の製品を参考に作成していますが、細部が異なる場合があります。ご購入の際は各販売サイトの商品詳細をご確認ください。
-              </p>
-
               {/* 家具リストエリア (Pick Up + その他) */}
               {((currentRoom?.items && currentRoom.items.length > 0) || (currentRoom?.picks && currentRoom.picks.length > 0)) && (
                 <div className="furniture-section" style={{ marginTop: "40px" }}>
@@ -555,6 +550,11 @@ export default function Home() {
                   )}
                 </div>
               )}
+
+              {/* 免責事項 (位置変更: 一番下へ) */}
+              <p style={{ fontSize: "11px", color: "#aaa", marginTop: "30px", marginBottom: "10px", lineHeight: "1.4", textAlign: "right" }}>
+                ※掲載している3Dモデルは実際の製品を参考に作成していますが、細部が異なる場合があります。<br />ご購入の際は各販売サイトの商品詳細をご確認ください。
+              </p>
 
             </div>
           </div>
