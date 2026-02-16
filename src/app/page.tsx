@@ -132,9 +132,9 @@ export default function Home() {
       <div className="container">
         <section className="hero" style={{
           textAlign: "center",
-          marginTop: "0px", // ギャップを詰める
+          marginTop: "0px",
           marginBottom: "30px",
-          padding: "30px 15px 25px", // 上パディングを縮小
+          padding: "15px 15px 20px", // さらにパディングを縮小
           backgroundColor: "#fff",
           borderRadius: "12px",
           boxShadow: "0 2px 10px rgba(0,0,0,0.03)"
