@@ -201,7 +201,8 @@ export default function Home() {
         </section>
 
         {isLoading ? (
-          <div className="loading-container" style={{ textAlign: "center", padding: "60px 0" }}>
+          <div className="loading-container" style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "60px 0" }}>
+            <div className="spinner-ring"></div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/hitoheya_lab_icon_final.svg"
