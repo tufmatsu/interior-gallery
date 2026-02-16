@@ -150,8 +150,8 @@ export default function Home() {
               style={{ display: "block", margin: "0 auto" }}
             />
           </div>
-          <h1 style={{ fontSize: "22px", fontWeight: "bold", color: "#333", marginBottom: "5px", letterSpacing: "1px" }}>ひとへやLabの空想コレクション</h1>
-          <p style={{ fontSize: "12px", color: "#0288d1", fontWeight: "bold", marginBottom: "15px", letterSpacing: "1px" }}>「空想ひとりぐらし」のアーカイブ。</p>
+          {/* <h1 style={{ fontSize: "22px", fontWeight: "bold", color: "#333", marginBottom: "5px", letterSpacing: "1px" }}>ひとへやLabの空想コレクション</h1> */}
+          <p style={{ fontSize: "14px", color: "#0288d1", fontWeight: "bold", marginBottom: "15px", letterSpacing: "1px", marginTop: "10px" }}>「空想ひとりぐらし」のアーカイブ。</p>
 
           <div style={{ maxWidth: "600px", margin: "0 auto", lineHeight: "1.6", color: "#555", fontSize: "13px" }}>
             <p style={{ marginBottom: "10px" }}>
