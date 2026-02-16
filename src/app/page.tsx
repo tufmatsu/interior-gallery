@@ -237,8 +237,48 @@ export default function Home() {
                     </div>
                     <div className="room-info">
                       <h2 className="room-title">{room.name}</h2>
-                      <div className="room-meta">
-                        <span>詳細を見る &rarr;</span>
+
+                      {/* アイテムチラ見せ (最大2つ) */}
+                      {(room.picks && room.picks.length > 0) && (
+                        <div style={{ marginBottom: "12px", fontSize: "11px", color: "#666", display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                          {room.picks.slice(0, 2).map((item, idx) => (
+                            <span key={idx} style={{
+                              backgroundColor: "#f0f9ff",
+                              color: "#0288d1",
+                              padding: "2px 6px",
+                              borderRadius: "4px",
+                              border: "1px solid #e0f2fe"
+                            }}>
+                              {item.name.length > 8 ? item.name.substring(0, 8) + "..." : item.name}
+                            </span>
+                          ))}
+                          {room.picks.length > 2 && <span style={{ color: "#999", fontSize: "10px", alignSelf: "center" }}>+{room.picks.length - 2}</span>}
+                        </div>
+                      )}
+
+                      <div className="room-meta" style={{ marginTop: "auto" }}>
+                        <span style={{
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                          color: "#35c5f0",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px"
+                        }}>
+                          <span style={{
+                            width: "16px",
+                            height: "16px",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            border: "1px solid #35c5f0",
+                            borderRadius: "50%",
+                            fontSize: "10px"
+                          }}>
+                            🛋️
+                          </span>
+                          使った家具を見る &rarr;
+                        </span>
                       </div>
                     </div>
                   </div>
