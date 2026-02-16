@@ -205,7 +205,7 @@ export default function Home() {
             <div className="spinner-ring"></div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/hitoheya_lab_icon_final.svg"
+              src="/hitoheya_lab_icon_loading.svg"
               alt="Loading..."
               width="60"
               height="60"

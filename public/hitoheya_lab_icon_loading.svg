@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700&amp;family=Outfit:wght@700&amp;display=swap');
+    /* Border removed for loading version */
+    /* .st-circle { fill: #ffffff; stroke: #2f3438; stroke-width: 5.5; } */
+    .st-house { fill: none; stroke: #35c5f0; stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; }
+    .st-text-jp { fill: #2f3438; font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0.05em; }
+    .st-text-en { fill: #35c5f0; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.05em; }
+  </style>
+  
+  <!-- White Background Circle (Optional, kept for visibility on colored bg) -->
+  <!-- <circle cx="100" cy="100" r="99" fill="#ffffff" /> -->
+  
+  <!-- Border Circle REMOVED -->
+  
+  <!-- House Shape -->
+  <path class="st-house" d="M45,92 L100,48 L135,76 V56 h14 v31 l6,5 V152 H45 Z" />
+  
+  <!-- Text -->
+  <text x="100" y="119" text-anchor="middle" class="st-text-jp">ひとへや</text>
+  <text x="100" y="143" text-anchor="middle" class="st-text-en">Lab</text>
+</svg>
