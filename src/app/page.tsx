@@ -324,6 +324,7 @@ export default function Home() {
                         minWidth: "100%",
                         width: "100%",
                         scrollSnapAlign: "center",
+                        scrollSnapStop: "always", // これを追加: 勢いよくスワイプしても必ずここで止まる
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
