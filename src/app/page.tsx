@@ -132,13 +132,24 @@ export default function Home() {
       <div className="container">
         <section className="hero" style={{
           textAlign: "center",
-          marginTop: "20px", // マージン縮小
-          marginBottom: "30px", // マージン縮小
-          padding: "20px 15px", // パディング縮小
+          marginTop: "20px",
+          marginBottom: "30px",
+          padding: "40px 15px 30px", // 上パディングを増やす
           backgroundColor: "#fff",
           borderRadius: "12px",
           boxShadow: "0 2px 10px rgba(0,0,0,0.03)"
         }}>
+          {/* ロゴ配置 */}
+          <div style={{ marginBottom: "15px" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/hitoheya_lab_icon_final.svg"
+              alt="ひとへやLab"
+              width="90"
+              height="90"
+              style={{ display: "block", margin: "0 auto" }}
+            />
+          </div>
           <h1 style={{ fontSize: "22px", fontWeight: "bold", color: "#333", marginBottom: "5px", letterSpacing: "1px" }}>ひとへやLabの空想コレクション</h1>
           <p style={{ fontSize: "12px", color: "#0288d1", fontWeight: "bold", marginBottom: "15px", letterSpacing: "1px" }}>「空想ひとりぐらし」のアーカイブ。</p>
 
@@ -190,7 +201,16 @@ export default function Home() {
         </section>
 
         {isLoading ? (
-          <div className="spinner"></div>
+          <div className="loading-container" style={{ textAlign: "center", padding: "60px 0" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/hitoheya_lab_icon_final.svg"
+              alt="Loading..."
+              width="60"
+              height="60"
+              className="loading-logo"
+            />
+          </div>
         ) : (
           <>
             <main className="gallery-grid">

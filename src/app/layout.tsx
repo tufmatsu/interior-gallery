@@ -9,8 +9,12 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: "3DCG Interior Gallery",
+  title: "ひとへやLab | 空想インテリアギャラリー",
   description: "Interior design collection powered by Notion",
+  icons: {
+    icon: "/hitoheya_lab_icon_final.svg",
+    apple: "/hitoheya_lab_icon_final.svg",
+  },
 };
 
 export default function RootLayout({
@@ -19,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ja">
       <body className={`${notoSansJP.variable}`}>
         {children}
       </body>
