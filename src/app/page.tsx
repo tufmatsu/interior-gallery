@@ -42,6 +42,15 @@ const getLinkStyle = (url: string) => {
   }
 };
 
+// 部屋名の末尾が数字の場合は「㎡」を付与するヘルパー関数
+const formatRoomName = (name: string) => {
+  // 「畳」を含み、かつ数字（整数または小数）で終わっている場合
+  if (name.includes("畳") && /[\d.]+$/.test(name)) {
+    return name + "㎡";
+  }
+  return name;
+};
+
 const ITEMS_PER_PAGE = 6; // 1回に表示する件数
 
 export default function Home() {
@@ -236,49 +245,9 @@ export default function Home() {
                       />
                     </div>
                     <div className="room-info">
-                      <h2 className="room-title">{room.name}</h2>
-
-                      {/* アイテムチラ見せ (最大2つ) */}
-                      {(room.picks && room.picks.length > 0) && (
-                        <div style={{ marginBottom: "12px", fontSize: "11px", color: "#666", display: "flex", flexWrap: "wrap", gap: "4px" }}>
-                          {room.picks.slice(0, 2).map((item, idx) => (
-                            <span key={idx} style={{
-                              backgroundColor: "#f0f9ff",
-                              color: "#0288d1",
-                              padding: "2px 6px",
-                              borderRadius: "4px",
-                              border: "1px solid #e0f2fe"
-                            }}>
-                              {item.name.length > 8 ? item.name.substring(0, 8) + "..." : item.name}
-                            </span>
-                          ))}
-                          {room.picks.length > 2 && <span style={{ color: "#999", fontSize: "10px", alignSelf: "center" }}>+{room.picks.length - 2}</span>}
-                        </div>
-                      )}
-
-                      <div className="room-meta" style={{ marginTop: "auto" }}>
-                        <span style={{
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          color: "#35c5f0",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px"
-                        }}>
-                          <span style={{
-                            width: "16px",
-                            height: "16px",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            border: "1px solid #35c5f0",
-                            borderRadius: "50%",
-                            fontSize: "10px"
-                          }}>
-                            🛋️
-                          </span>
-                          使った家具を見る &rarr;
-                        </span>
+                      <h2 className="room-title">{formatRoomName(room.name)}</h2>
+                      <div className="room-meta">
+                        <span>詳細を見る &rarr;</span>
                       </div>
                     </div>
                   </div>
@@ -328,7 +297,7 @@ export default function Home() {
       >
         <div className="modal-content">
           <header className="modal-header">
-            <div className="modal-title">{currentRoom?.name}</div>
+            <div className="modal-title">{currentRoom ? formatRoomName(currentRoom.name) : ""}</div>
             <button className="close-btn" onClick={closeModal}>
               &times;
             </button>
