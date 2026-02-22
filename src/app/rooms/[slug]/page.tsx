@@ -53,19 +53,10 @@ export default async function RoomPage({ params }: Props) {
 
     return (
         <div style={{ backgroundColor: "#fcfcfc", minHeight: "100vh" }}>
-            <header style={{
-                padding: "15px 20px",
-                backgroundColor: "#fff",
-                borderBottom: "1px solid #eee",
-                position: "sticky",
-                top: 0,
-                zIndex: 100,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between"
-            }}>
-                <Link href="/" style={{ textDecoration: "none", color: "#333", fontWeight: "bold", fontSize: "16px" }}>
-                    ← <span style={{ marginLeft: "5px" }}>ひとへやLab</span>
+            <header className="header">
+                <Link href="/" className="logo" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
+                    <span style={{ fontSize: "18px", color: "#828c94", fontWeight: "normal" }}>←</span>
+                    <div>ひとへや<span>Lab</span></div>
                 </Link>
             </header>
 
