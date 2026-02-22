@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Apartment Floor Plans (Madori)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Noto Sans JP', sans-serif;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p.desc {
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .specs {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .madori-wrapper {
+            width: 100%;
+            height: 350px;
+            /* Fixed height for display */
+            border: 1px solid #eee;
+            background: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Madori Styles */
+        .wall {
+            fill: none;
+            stroke: #333;
+            stroke-width: 4;
+            stroke-linecap: square;
+        }
+
+        .wall-thin {
+            fill: none;
+            stroke: #333;
+            stroke-width: 2;
+        }
+
+        .floor {
+            fill: #fff;
+        }
+
+        .floor-room {
+            fill: #fdfdfd;
+            /* Tatami or flooring pattern could go here */
+        }
+
+        .floor-wet {
+            fill: #e0f2f1;
+            /* Light cyan for bath/toilet */
+        }
+
+        .floor-genkan {
+            fill: #ddd;
+        }
+
+        .door {
+            fill: none;
+            stroke: #666;
+            stroke-width: 1;
+        }
+
+        .door-arc {
+            fill: none;
+            stroke: #ddd;
+            stroke-width: 1;
+            stroke-dasharray: 2 2;
+        }
+
+        .furniture {
+            fill: none;
+            stroke: #888;
+            stroke-width: 1;
+        }
+
+        .text-label {
+            font-size: 12px;
+            fill: #555;
+            text-anchor: middle;
+            font-weight: bold;
+        }
+
+        .dimension {
+            font-size: 10px;
+            fill: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>日本の平均的な一人暮らし間取り図</h1>
+    <p class="desc">SVGを使用して、編集・再利用が可能なクリーンな間取りデータを作成しました。</p>
+
+    <div class="grid">
+
+        <!-- 1K Layout -->
+        <div class="card">
+            <h2>1. 標準的な1K (20㎡〜25㎡)</h2>
+            <div class="specs">
+                <span class="tag">洋室 6-7畳</span>
+                <span class="tag">バス・トイレ別</span>
+            </div>
+            <div class="madori-wrapper">
+                <svg viewBox="0 0 200 300">
+                    <!-- Outer Walls -->
+                    <rect x="20" y="20" width="160" height="260" class="wall" />
+
+                    <!-- Balcony -->
+                    <rect x="20" y="280" width="160" height="20" fill="#f9f9f9" stroke="#ccc" stroke-width="1" />
+                    <text x="100" y="294" class="text-label" style="font-size:10px; fill:#999;">バルコニー</text>
+
+                    <!-- Room Area (Top) -->
+                    <rect x="20" y="100" width="160" height="180" class="floor-room" />
+                    <line x1="20" y1="280" x2="180" y2="280" class="wall-thin" stroke="#999" /> <!-- Window -->
+
+                    <!-- Closet -->
+                    <rect x="140" y="100" width="40" height="50" class="wall-thin" fill="#fafafa" />
+                    <line x1="140" y1="125" x2="140" y2="150" class="door" />
+                    <text x="160" y="130" class="text-label">収納</text>
+
+                    <!-- Hallway / Kitchen Area (Bottom) -->
+                    <line x1="20" y1="100" x2="140" y2="100" class="wall-thin" /> <!-- Room Divider -->
+                    <path d="M110,100 L140,100" class="door" stroke-dasharray="2,2" /> <!-- Door -->
+
+                    <!-- Bathroom (Unit Bath) -->
+                    <rect x="110" y="30" width="70" height="50" class="floor-wet" stroke="#333" stroke-width="2" />
+                    <text x="145" y="60" class="text-label">浴室</text>
+
+                    <!-- Toilet -->
+                    <rect x="20" y="30" width="40" height="40" class="floor-wet" stroke="#333" stroke-width="2" />
+                    <text x="40" y="55" class="text-label">WC</text>
+
+                    <!-- Kitchen -->
+                    <rect x="70" y="70" width="50" height="20" class="furniture" fill="#eee" />
+                    <circle cx="80" cy="80" r="5" fill="none" stroke="#999" /> <!-- Sink -->
+                    <rect x="100" y="75" width="15" height="10" fill="none" stroke="#999" /> <!-- Stove -->
+                    <text x="95" y="95" class="text-label" font-size="10">K</text>
+
+                    <!-- Genkan -->
+                    <rect x="60" y="20" width="40" height="20" class="floor-genkan" />
+                    <text x="80" y="35" class="text-label" font-size="10">玄関</text>
+
+                    <!-- Room Label -->
+                    <text x="80" y="190" class="text-label" font-size="16">洋室</text>
+                    <text x="80" y="210" class="text-label" font-size="12">約7.0帖</text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 1R Layout -->
+        <div class="card">
+            <h2>2. コンパクトな1R (15㎡〜18㎡)</h2>
+            <div class="specs">
+                <span class="tag">洋室 6畳</span>
+                <span class="tag">3点ユニット</span>
+            </div>
+            <div class="madori-wrapper">
+                <svg viewBox="0 0 200 300">
+                    <!-- Outer Walls -->
+                    <rect x="30" y="40" width="140" height="220" class="wall" />
+
+                    <!-- Balcony -->
+                    <rect x="30" y="260" width="140" height="20" fill="#f9f9f9" stroke="#ccc" stroke-width="1" />
+
+                    <!-- Unit Bath (3-piece) -->
+                    <rect x="110" y="40" width="60" height="50" class="floor-wet" stroke="#333" stroke-width="2" />
+                    <text x="140" y="70" class="text-label" style="font-size:10px">UB</text>
+
+                    <!-- Hallway + Kitchen -->
+                    <rect x="30" y="40" width="80" height="60" fill="white" />
+                    <!-- Kitchen Unit -->
+                    <rect x="30" y="60" width="40" height="20" class="furniture" fill="#eee" />
+                    <text x="50" y="90" class="text-label" font-size="10">K</text>
+
+                    <!-- Main Door -->
+                    <rect x="70" y="40" width="30" height="10" class="floor-genkan" />
+
+                    <!-- Room -->
+                    <rect x="30" y="100" width="140" height="160" class="floor-room" stroke="none" />
+                    <line x1="30" y1="100" x2="170" y2="100" class="wall-thin" stroke-dasharray="2,2" />
+                    <!-- Imaginary divider -->
+
+                    <!-- Room Label -->
+                    <text x="100" y="180" class="text-label" font-size="16">洋室</text>
+                    <text x="100" y="200" class="text-label" font-size="12">約6.0帖</text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 1LDK Layout -->
+        <div class="card">
+            <h2>3. ゆとりのある1LDK (35㎡〜)</h2>
+            <div class="specs">
+                <span class="tag">LDK 10畳</span>
+                <span class="tag">寝室 5畳</span>
+            </div>
+            <div class="madori-wrapper">
+                <svg viewBox="0 0 300 300">
+                    <!-- Outer Walls (L-shape ish or wide rect) -->
+                    <polygon points="20,20 280,20 280,220 180,220 180,220 20,220" class="wall" />
+
+                    <!-- Balcony -->
+                    <rect x="20" y="220" width="260" height="20" fill="#f9f9f9" stroke="#ccc" stroke-width="1" />
+
+                    <!-- Bedroom (Right side) -->
+                    <rect x="180" y="20" width="100" height="120" class="wall-thin" />
+                    <text x="230" y="80" class="text-label" font-size="14">洋室</text>
+                    <text x="230" y="100" class="text-label" font-size="10">5.0帖</text>
+                    <!-- Closet -->
+                    <rect x="230" y="20" width="50" height="30" fill="#fafafa" stroke="#333" stroke-width="1" />
+                    <text x="255" y="40" class="text-label" font-size="9">WIC</text>
+
+                    <!-- LDK Area -->
+                    <rect x="20" y="20" width="160" height="200" fill="none" />
+                    <text x="100" y="140" class="text-label" font-size="16">LDK</text>
+                    <text x="100" y="160" class="text-label" font-size="12">約10.5帖</text>
+
+                    <!-- Kitchen (Island/Counter) -->
+                    <rect x="40" y="40" width="80" height="30" class="furniture" fill="#eee" />
+                    <text x="80" y="60" class="text-label">Kitchen</text>
+
+                    <!-- Wet Area (Bath/Toilet/Wash) -->
+                    <rect x="180" y="140" width="100" height="80" class="wall-thin" />
+                    <rect x="230" y="140" width="50" height="50" class="floor-wet" stroke="#333" />
+                    <text x="255" y="165" class="text-label">Bath</text>
+                    <rect x="180" y="140" width="50" height="40" stroke="#333" />
+                    <text x="205" y="160" class="text-label">Powder</text>
+                    <rect x="180" y="180" width="40" height="40" stroke="#333" />
+                    <text x="200" y="200" class="text-label">WC</text>
+
+                    <!-- Entrance -->
+                    <rect x="20" y="20" width="40" height="40" class="floor-genkan" />
+                </svg>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
