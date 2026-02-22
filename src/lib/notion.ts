@@ -28,6 +28,11 @@ function parseItems(property: any): { name: string; url: string }[] {
   return [];
 }
 
+export type ContentBlock = {
+  type: "text" | "image";
+  content: string;
+};
+
 export type Room = {
   id: string;
   name: string;
@@ -37,7 +42,45 @@ export type Room = {
   images: string[];
   items: { name: string; url: string }[];
   picks: { name: string; url: string }[];
+  content?: ContentBlock[]; // 本文のブロックデータ
 };
+
+// ページの本文ブロックを取得する関数
+async function getPageBlocks(pageId: string): Promise<ContentBlock[]> {
+  const NOTION_API_KEY = process.env.NOTION_API_KEY;
+  if (!NOTION_API_KEY) return [];
+
+  try {
+    const response = await fetch(
+      `https://api.notion.com/v1/blocks/${pageId}/children?page_size=100`,
+      {
+        headers: {
+          Authorization: `Bearer ${NOTION_API_KEY}`,
+          "Notion-Version": "2022-06-28",
+        },
+        next: { revalidate: 60 }
+      }
+    );
+
+    if (!response.ok) return [];
+    const data = await response.json();
+
+    const blocks: ContentBlock[] = [];
+    for (const block of data.results) {
+      if (block.type === "paragraph") {
+        const text = block.paragraph.rich_text.map((t: any) => t.plain_text).join("");
+        if (text) blocks.push({ type: "text", content: text });
+      } else if (block.type === "image") {
+        const url = block.image.file?.url || block.image.external?.url;
+        if (url) blocks.push({ type: "image", content: url });
+      }
+    }
+    return blocks;
+  } catch (error) {
+    console.error("Notion Blocks API Error:", error);
+    return [];
+  }
+}
 
 export const getRooms = async (): Promise<Room[]> => {
   const NOTION_API_KEY = process.env.NOTION_API_KEY;
@@ -56,14 +99,9 @@ export const getRooms = async (): Promise<Room[]> => {
           "Notion-Version": "2022-06-28",
         },
         body: JSON.stringify({
-          sorts: [
-            {
-              timestamp: "created_time",
-              direction: "descending",
-            },
-          ],
+          sorts: [{ timestamp: "created_time", direction: "descending" }],
         }),
-        next: { revalidate: 60 } // 1分キャッシュ
+        next: { revalidate: 60 }
       }
     );
 
@@ -97,5 +135,12 @@ export const getRooms = async (): Promise<Room[]> => {
 
 export const getRoomBySlug = async (slug: string): Promise<Room | null> => {
   const rooms = await getRooms();
-  return rooms.find((r) => r.slug === slug) || null;
+  const room = rooms.find((r) => r.slug === slug) || null;
+
+  if (room) {
+    // ページが見つかったら本文ブロックも取得する
+    room.content = await getPageBlocks(room.id);
+  }
+
+  return room;
 };

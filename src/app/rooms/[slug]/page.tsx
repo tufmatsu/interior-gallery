@@ -71,18 +71,46 @@ export default async function RoomPage({ params }: Props) {
                         {room.description}
                     </div>
 
-                    {/* 画像ギャラリー (高画質・縦並び) */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginBottom: "40px" }}>
-                        {room.images.map((img, idx) => (
-                            <div key={idx} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src={img}
-                                    alt={`${room.name} アングル ${idx + 1}`}
-                                    style={{ width: "100%", height: "auto", display: "block" }}
-                                />
-                            </div>
-                        ))}
+                    {/* 記事本文セクション (Notionの本文がある場合はこちらを優先) */}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "25px", marginBottom: "40px" }}>
+                        {room.content && room.content.length > 0 ? (
+                            room.content.map((block, idx) => (
+                                <div key={idx}>
+                                    {block.type === "image" ? (
+                                        <div style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img
+                                                src={block.content}
+                                                alt={`${room.name} 写真 ${idx + 1}`}
+                                                style={{ width: "100%", height: "auto", display: "block" }}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div style={{
+                                            fontSize: "16px",
+                                            lineHeight: "1.8",
+                                            color: "#444",
+                                            padding: "0 5px",
+                                            marginBottom: "15px"
+                                        }}>
+                                            {block.content}
+                                        </div>
+                                    )}
+                                </div>
+                            ))
+                        ) : (
+                            // 本文が空の場合のフォールバック (プロパティの画像を一覧表示)
+                            room.images.map((img, idx) => (
+                                <div key={idx} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={img}
+                                        alt={`${room.name} アングル ${idx + 1}`}
+                                        style={{ width: "100%", height: "auto", display: "block" }}
+                                    />
+                                </div>
+                            ))
+                        )}
                     </div>
 
                     {/* アイテムセクション */}
