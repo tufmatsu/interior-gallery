@@ -4,12 +4,13 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 type Props = {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 };
 
 // SEO用のメタデータを動的に生成
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const room = await getRoomBySlug(params.slug);
+    const { slug } = await params;
+    const room = await getRoomBySlug(slug);
     if (!room) return { title: "Room Not Found" };
 
     return {
@@ -40,7 +41,8 @@ const getLinkStyle = (url: string) => {
 };
 
 export default async function RoomPage({ params }: Props) {
-    const room = await getRoomBySlug(params.slug);
+    const { slug } = await params;
+    const room = await getRoomBySlug(slug);
 
     if (!room) {
         notFound();
