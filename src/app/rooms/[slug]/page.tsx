@@ -1,4 +1,5 @@
 import { getRoomBySlug, Room } from "@/lib/notion";
+export const runtime = 'edge';
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
