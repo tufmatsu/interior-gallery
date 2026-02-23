@@ -75,21 +75,26 @@ export default async function RoomPage({ params }: Props) {
                     <div style={{ display: "flex", flexDirection: "column", gap: "25px", marginBottom: "40px" }}>
                         {room.content && room.content.length > 0 ? (
                             (() => {
+                                const totalImages = room.content.filter(b => b.type === "image").length;
                                 let imageCount = 0;
+
                                 return room.content.map((block, idx) => {
-                                    let isSecondImage = false;
+                                    let isNoCrop = false;
                                     let isFirstImage = false;
 
                                     if (block.type === "image") {
                                         imageCount++;
+                                        // 1枚目、2枚目、または最後の画像の場合
+                                        if (imageCount === 1 || imageCount === 2 || imageCount === totalImages) {
+                                            isNoCrop = true;
+                                        }
                                         if (imageCount === 1) isFirstImage = true;
-                                        if (imageCount === 2) isSecondImage = true;
                                     }
 
                                     return (
                                         <div key={idx}>
                                             {block.type === "image" ? (
-                                                <div className={`room-image-block ${isSecondImage ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
+                                                <div className={`room-image-block ${isNoCrop ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
                                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                                     <img
                                                         src={block.content}
@@ -144,47 +149,50 @@ export default async function RoomPage({ params }: Props) {
                             })()
                         ) : (
                             // 本文が空の場合のフォールバック (プロパティの画像を一覧表示)
-                            room.images.map((img, idx) => (
-                                <div key={idx}>
-                                    <div className={`room-image-block ${idx === 1 ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img
-                                            src={img}
-                                            alt={`${room.name} アングル ${idx + 1}`}
-                                            style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
-                                        />
-                                    </div>
-                                    {/* 1枚目の直後にPick Up!を挿入 */}
-                                    {idx === 0 && room.picks.length > 0 && (
-                                        <div style={{ marginTop: "20px", marginBottom: "10px" }}>
-                                            <div style={{ display: "inline-block", backgroundColor: "#0288d1", color: "#fff", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", marginBottom: "10px" }}>
-                                                Pick Up!
-                                            </div>
-                                            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                                                {room.picks.map((item, i) => {
-                                                    const style = getLinkStyle(item.url);
-                                                    return (
-                                                        <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
-                                                            display: "flex",
-                                                            justifyContent: "space-between",
-                                                            alignItems: "center",
-                                                            padding: "12px 15px",
-                                                            backgroundColor: style.bg,
-                                                            border: `1px solid ${style.color}33`,
-                                                            borderRadius: "8px",
-                                                            textDecoration: "none",
-                                                            color: "#333",
-                                                        }}>
-                                                            <span style={{ fontWeight: "bold", fontSize: "14px" }}>{item.name}</span>
-                                                            <span style={{ fontSize: "11px", color: style.color, fontWeight: "bold" }}>{style.text}</span>
-                                                        </a>
-                                                    );
-                                                })}
-                                            </div>
+                            room.images.map((img, idx) => {
+                                const isNoCrop = idx === 0 || idx === 1 || idx === room.images.length - 1;
+                                return (
+                                    <div key={idx}>
+                                        <div className={`room-image-block ${isNoCrop ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                                            <img
+                                                src={img}
+                                                alt={`${room.name} アングル ${idx + 1}`}
+                                                style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
+                                            />
                                         </div>
-                                    )}
-                                </div>
-                            ))
+                                        {/* 1枚目の直後にPick Up!を挿入 */}
+                                        {idx === 0 && room.picks.length > 0 && (
+                                            <div style={{ marginTop: "20px", marginBottom: "10px" }}>
+                                                <div style={{ display: "inline-block", backgroundColor: "#0288d1", color: "#fff", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", marginBottom: "10px" }}>
+                                                    Pick Up!
+                                                </div>
+                                                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                                                    {room.picks.map((item, i) => {
+                                                        const style = getLinkStyle(item.url);
+                                                        return (
+                                                            <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
+                                                                display: "flex",
+                                                                justifyContent: "space-between",
+                                                                alignItems: "center",
+                                                                padding: "12px 15px",
+                                                                backgroundColor: style.bg,
+                                                                border: `1px solid ${style.color}33`,
+                                                                borderRadius: "8px",
+                                                                textDecoration: "none",
+                                                                color: "#333",
+                                                            }}>
+                                                                <span style={{ fontWeight: "bold", fontSize: "14px" }}>{item.name}</span>
+                                                                <span style={{ fontSize: "11px", color: style.color, fontWeight: "bold" }}>{style.text}</span>
+                                                            </a>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })
                         )}
                     </div>
 
