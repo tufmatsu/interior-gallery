@@ -374,6 +374,32 @@ button {
   }
 }
 
+/* 部屋詳細ページの画像ブロック（スマホで4:5にクロップ） */
+.room-image-block {
+  width: 100%;
+}
+
+.room-image-block img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .room-image-block {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+  }
+
+  .room-image-block img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
 /* スマホ最適化 (Mobile) */
 @media (max-width: 768px) {
   .container {

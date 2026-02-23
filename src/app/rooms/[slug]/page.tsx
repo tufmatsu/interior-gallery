@@ -77,12 +77,12 @@ export default async function RoomPage({ params }: Props) {
                             room.content.map((block, idx) => (
                                 <div key={idx}>
                                     {block.type === "image" ? (
-                                        <div style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
+                                        <div className="room-image-block" style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
                                                 src={block.content}
                                                 alt={`${room.name} 写真 ${idx + 1}`}
-                                                style={{ width: "100%", height: "auto", display: "block" }}
+                                                style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
                                             />
                                         </div>
                                     ) : (
@@ -101,12 +101,12 @@ export default async function RoomPage({ params }: Props) {
                         ) : (
                             // 本文が空の場合のフォールバック (プロパティの画像を一覧表示)
                             room.images.map((img, idx) => (
-                                <div key={idx} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                                <div key={idx} className="room-image-block" style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                     <img
                                         src={img}
                                         alt={`${room.name} アングル ${idx + 1}`}
-                                        style={{ width: "100%", height: "auto", display: "block" }}
+                                        style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
                                     />
                                 </div>
                             ))
