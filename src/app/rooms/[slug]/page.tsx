@@ -78,9 +78,15 @@ export default async function RoomPage({ params }: Props) {
                                 const totalImages = room.content.filter(b => b.type === "image").length;
                                 let imageCount = 0;
 
+                                // 挿入位置を決定：最初の画像を見つけ、次のブロックがテキストならその下
+                                const firstImageIdx = room.content.findIndex(b => b.type === "image");
+                                let insertionIdx = firstImageIdx;
+                                if (firstImageIdx !== -1 && room.content[firstImageIdx + 1] && room.content[firstImageIdx + 1].type !== "image") {
+                                    insertionIdx = firstImageIdx + 1;
+                                }
+
                                 return room.content.map((block, idx) => {
                                     let isNoCrop = false;
-                                    let isFirstImage = false;
 
                                     if (block.type === "image") {
                                         imageCount++;
@@ -88,7 +94,6 @@ export default async function RoomPage({ params }: Props) {
                                         if (imageCount === 1 || imageCount === 2 || imageCount === totalImages) {
                                             isNoCrop = true;
                                         }
-                                        if (imageCount === 1) isFirstImage = true;
                                     }
 
                                     return (
@@ -116,8 +121,8 @@ export default async function RoomPage({ params }: Props) {
                                                 </div>
                                             )}
 
-                                            {/* 最初の画像の直後にPick Up!を挿入 */}
-                                            {isFirstImage && room.picks.length > 0 && (
+                                            {/* 決定した挿入位置（画像またはその説明文の下）にPick Up!を挿入 */}
+                                            {idx === insertionIdx && room.picks.length > 0 && (
                                                 <div style={{ marginTop: "10px", marginBottom: "20px" }}>
                                                     <div style={{ fontSize: "13px", fontWeight: "bold", color: "#666", marginBottom: "8px", borderLeft: "3px solid #35c5f0", paddingLeft: "8px" }}>
                                                         参考にしたアイテム
