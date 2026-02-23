@@ -63,12 +63,16 @@ export default async function RoomPage({ params }: Props) {
             <main style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
                 {/* タイトルセクション */}
                 <article>
-                    <h1 style={{ fontSize: "24px", fontWeight: "bold", color: "#333", marginBottom: "15px", lineHeight: "1.4" }}>
-                        {formattedName}
+                    {/* 実質的なタイトルとしての説明文 */}
+                    <h1 style={{ fontSize: "26px", fontWeight: "bold", color: "#333", marginBottom: "12px", lineHeight: "1.4", letterSpacing: "-0.01em" }}>
+                        {room.description}
                     </h1>
 
-                    <div style={{ color: "#666", lineHeight: "1.8", whiteSpace: "pre-wrap", marginBottom: "30px", fontSize: "15px" }}>
-                        {room.description}
+                    {/* 補足情報（部屋サイズなど） */}
+                    <div style={{ color: "#828c94", fontSize: "14px", fontWeight: "500", marginBottom: "35px", display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span>{formattedName}</span>
+                        <span style={{ color: "#eee" }}>|</span>
+                        <span>ひとへやLab</span>
                     </div>
 
                     {/* 記事本文セクション (Notionの本文がある場合はこちらを優先) */}
