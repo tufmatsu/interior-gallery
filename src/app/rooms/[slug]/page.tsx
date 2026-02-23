@@ -117,7 +117,7 @@ export default async function RoomPage({ params }: Props) {
                     {(room.picks.length > 0 || room.items.length > 0) && (
                         <section style={{ backgroundColor: "#fff", padding: "25px", borderRadius: "16px", border: "1px solid #eee" }}>
                             <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "20px", borderLeft: "4px solid #35c5f0", paddingLeft: "15px" }}>
-                                紹介したアイテム
+                                参考にしたアイテム
                             </h2>
 
                             {/* Pick Up! */}
