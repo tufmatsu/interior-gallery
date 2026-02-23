@@ -392,11 +392,20 @@ button {
     overflow: hidden;
   }
 
+  .room-image-block.no-crop {
+    aspect-ratio: auto;
+  }
+
   .room-image-block img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
+  }
+
+  .room-image-block.no-crop img {
+    height: auto;
+    object-fit: contain;
   }
 }
 

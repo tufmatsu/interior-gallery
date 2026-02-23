@@ -75,15 +75,21 @@ export default async function RoomPage({ params }: Props) {
                     <div style={{ display: "flex", flexDirection: "column", gap: "25px", marginBottom: "40px" }}>
                         {room.content && room.content.length > 0 ? (
                             (() => {
-                                let firstImageFound = false;
+                                let imageCount = 0;
                                 return room.content.map((block, idx) => {
-                                    const isFirstImage = block.type === "image" && !firstImageFound;
-                                    if (isFirstImage) firstImageFound = true;
+                                    let isSecondImage = false;
+                                    let isFirstImage = false;
+
+                                    if (block.type === "image") {
+                                        imageCount++;
+                                        if (imageCount === 1) isFirstImage = true;
+                                        if (imageCount === 2) isSecondImage = true;
+                                    }
 
                                     return (
                                         <div key={idx}>
                                             {block.type === "image" ? (
-                                                <div className="room-image-block" style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
+                                                <div className={`room-image-block ${isSecondImage ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
                                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                                     <img
                                                         src={block.content}
@@ -140,7 +146,7 @@ export default async function RoomPage({ params }: Props) {
                             // 本文が空の場合のフォールバック (プロパティの画像を一覧表示)
                             room.images.map((img, idx) => (
                                 <div key={idx}>
-                                    <div className="room-image-block" style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                                    <div className={`room-image-block ${idx === 1 ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
                                             src={img}
