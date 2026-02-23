@@ -74,104 +74,138 @@ export default async function RoomPage({ params }: Props) {
                     {/* 記事本文セクション (Notionの本文がある場合はこちらを優先) */}
                     <div style={{ display: "flex", flexDirection: "column", gap: "25px", marginBottom: "40px" }}>
                         {room.content && room.content.length > 0 ? (
-                            room.content.map((block, idx) => (
-                                <div key={idx}>
-                                    {block.type === "image" ? (
-                                        <div className="room-image-block" style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
-                                                src={block.content}
-                                                alt={`${room.name} 写真 ${idx + 1}`}
-                                                style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
-                                            />
+                            (() => {
+                                let firstImageFound = false;
+                                return room.content.map((block, idx) => {
+                                    const isFirstImage = block.type === "image" && !firstImageFound;
+                                    if (isFirstImage) firstImageFound = true;
+
+                                    return (
+                                        <div key={idx}>
+                                            {block.type === "image" ? (
+                                                <div className="room-image-block" style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
+                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                    <img
+                                                        src={block.content}
+                                                        alt={`${room.name} 写真 ${idx + 1}`}
+                                                        style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div style={{
+                                                    fontSize: "16px",
+                                                    lineHeight: "1.8",
+                                                    color: "#444",
+                                                    padding: "0 5px",
+                                                    marginBottom: "15px"
+                                                }}>
+                                                    {block.content}
+                                                </div>
+                                            )}
+
+                                            {/* 最初の画像の直後にPick Up!を挿入 */}
+                                            {isFirstImage && room.picks.length > 0 && (
+                                                <div style={{ marginTop: "10px", marginBottom: "20px" }}>
+                                                    <div style={{ display: "inline-block", backgroundColor: "#0288d1", color: "#fff", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", marginBottom: "10px" }}>
+                                                        Pick Up!
+                                                    </div>
+                                                    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                                                        {room.picks.map((item, i) => {
+                                                            const style = getLinkStyle(item.url);
+                                                            return (
+                                                                <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
+                                                                    display: "flex",
+                                                                    justifyContent: "space-between",
+                                                                    alignItems: "center",
+                                                                    padding: "12px 15px",
+                                                                    backgroundColor: style.bg,
+                                                                    border: `1px solid ${style.color}33`,
+                                                                    borderRadius: "8px",
+                                                                    textDecoration: "none",
+                                                                    color: "#333",
+                                                                }}>
+                                                                    <span style={{ fontWeight: "bold", fontSize: "14px" }}>{item.name}</span>
+                                                                    <span style={{ fontSize: "11px", color: style.color, fontWeight: "bold" }}>{style.text}</span>
+                                                                </a>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
-                                    ) : (
-                                        <div style={{
-                                            fontSize: "16px",
-                                            lineHeight: "1.8",
-                                            color: "#444",
-                                            padding: "0 5px",
-                                            marginBottom: "15px"
-                                        }}>
-                                            {block.content}
-                                        </div>
-                                    )}
-                                </div>
-                            ))
+                                    );
+                                });
+                            })()
                         ) : (
                             // 本文が空の場合のフォールバック (プロパティの画像を一覧表示)
                             room.images.map((img, idx) => (
-                                <div key={idx} className="room-image-block" style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
-                                        src={img}
-                                        alt={`${room.name} アングル ${idx + 1}`}
-                                        style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
-                                    />
+                                <div key={idx}>
+                                    <div className="room-image-block" style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img
+                                            src={img}
+                                            alt={`${room.name} アングル ${idx + 1}`}
+                                            style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
+                                        />
+                                    </div>
+                                    {/* 1枚目の直後にPick Up!を挿入 */}
+                                    {idx === 0 && room.picks.length > 0 && (
+                                        <div style={{ marginTop: "20px", marginBottom: "10px" }}>
+                                            <div style={{ display: "inline-block", backgroundColor: "#0288d1", color: "#fff", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", marginBottom: "10px" }}>
+                                                Pick Up!
+                                            </div>
+                                            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                                                {room.picks.map((item, i) => {
+                                                    const style = getLinkStyle(item.url);
+                                                    return (
+                                                        <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
+                                                            display: "flex",
+                                                            justifyContent: "space-between",
+                                                            alignItems: "center",
+                                                            padding: "12px 15px",
+                                                            backgroundColor: style.bg,
+                                                            border: `1px solid ${style.color}33`,
+                                                            borderRadius: "8px",
+                                                            textDecoration: "none",
+                                                            color: "#333",
+                                                        }}>
+                                                            <span style={{ fontWeight: "bold", fontSize: "14px" }}>{item.name}</span>
+                                                            <span style={{ fontSize: "11px", color: style.color, fontWeight: "bold" }}>{style.text}</span>
+                                                        </a>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             ))
                         )}
                     </div>
 
-                    {/* アイテムセクション */}
-                    {(room.picks.length > 0 || room.items.length > 0) && (
+                    {/* アイテム一覧セクション */}
+                    {room.items.length > 0 && (
                         <section style={{ backgroundColor: "#fff", padding: "25px", borderRadius: "16px", border: "1px solid #eee" }}>
-                            <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "20px", borderLeft: "4px solid #35c5f0", paddingLeft: "15px" }}>
+                            <h2 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "20px", borderLeft: "4px solid #35c5f0", paddingLeft: "15px" }}>
                                 参考にしたアイテム
                             </h2>
 
-                            {/* Pick Up! */}
-                            {room.picks.length > 0 && (
-                                <div style={{ marginBottom: "30px" }}>
-                                    <div style={{ display: "inline-block", backgroundColor: "#0288d1", color: "#fff", padding: "4px 12px", borderRadius: "20px", fontSize: "13px", fontWeight: "bold", marginBottom: "12px" }}>
-                                        Pick Up!
-                                    </div>
-                                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                                        {room.picks.map((item, i) => {
-                                            const style = getLinkStyle(item.url);
-                                            return (
-                                                <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
-                                                    display: "flex",
-                                                    justifyContent: "space-between",
-                                                    alignItems: "center",
-                                                    padding: "15px 20px",
-                                                    backgroundColor: style.bg,
-                                                    border: `1px solid ${style.color}33`,
-                                                    borderRadius: "8px",
-                                                    textDecoration: "none",
-                                                    color: "#333",
-                                                    transition: "transform 0.2s"
-                                                }}>
-                                                    <span style={{ fontWeight: "bold" }}>{item.name}</span>
-                                                    <span style={{ fontSize: "12px", color: style.color, fontWeight: "bold" }}>{style.text}</span>
-                                                </a>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* その他のアイテム */}
-                            {room.items.length > 0 && (
-                                <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                                    {room.items.map((item, i) => {
-                                        const style = getLinkStyle(item.url);
-                                        return (
-                                            <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
-                                                padding: "8px 16px",
-                                                backgroundColor: "#f9f9f9",
-                                                border: "1px solid #ddd",
-                                                borderRadius: "6px",
-                                                fontSize: "14px",
-                                                color: "#555",
-                                                textDecoration: "none"
-                                            }}>
-                                                {item.name} <span style={{ fontSize: "10px", marginLeft: "4px", color: "#888" }}>↗</span>
-                                            </a>
-                                        );
-                                    })}
-                                </div>
-                            )}
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                                {room.items.map((item, i) => {
+                                    return (
+                                        <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
+                                            padding: "8px 16px",
+                                            backgroundColor: "#f9f9f9",
+                                            border: "1px solid #ddd",
+                                            borderRadius: "6px",
+                                            fontSize: "14px",
+                                            color: "#555",
+                                            textDecoration: "none"
+                                        }}>
+                                            {item.name} <span style={{ fontSize: "10px", marginLeft: "4px", color: "#888" }}>↗</span>
+                                        </a>
+                                    );
+                                })}
+                            </div>
                         </section>
                     )}
 
