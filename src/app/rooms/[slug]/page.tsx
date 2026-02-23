@@ -119,6 +119,9 @@ export default async function RoomPage({ params }: Props) {
                                             {/* 最初の画像の直後にPick Up!を挿入 */}
                                             {isFirstImage && room.picks.length > 0 && (
                                                 <div style={{ marginTop: "10px", marginBottom: "20px" }}>
+                                                    <div style={{ fontSize: "13px", fontWeight: "bold", color: "#666", marginBottom: "8px", borderLeft: "3px solid #35c5f0", paddingLeft: "8px" }}>
+                                                        参考にしたアイテム
+                                                    </div>
                                                     <div style={{ display: "inline-block", backgroundColor: "#0288d1", color: "#fff", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", marginBottom: "10px" }}>
                                                         Pick Up!
                                                     </div>
@@ -168,6 +171,9 @@ export default async function RoomPage({ params }: Props) {
                                         {/* 1枚目の直後にPick Up!を挿入 */}
                                         {idx === 0 && room.picks.length > 0 && (
                                             <div style={{ marginTop: "20px", marginBottom: "10px" }}>
+                                                <div style={{ fontSize: "13px", fontWeight: "bold", color: "#666", marginBottom: "8px", borderLeft: "3px solid #35c5f0", paddingLeft: "8px" }}>
+                                                    参考にしたアイテム
+                                                </div>
                                                 <div style={{ display: "inline-block", backgroundColor: "#0288d1", color: "#fff", padding: "4px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "bold", marginBottom: "10px" }}>
                                                     Pick Up!
                                                 </div>
