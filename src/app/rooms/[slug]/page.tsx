@@ -200,30 +200,64 @@ export default async function RoomPage({ params }: Props) {
                         )}
                     </div>
 
-                    {/* アイテム一覧セクション */}
-                    {room.items.length > 0 && (
-                        <section style={{ backgroundColor: "#fff", padding: "25px", borderRadius: "16px", border: "1px solid #eee" }}>
-                            <h2 style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "20px", borderLeft: "4px solid #35c5f0", paddingLeft: "15px" }}>
+                    {/* 参考にしたアイテムセクション */}
+                    {(room.picks.length > 0 || room.items.length > 0) && (
+                        <section id="items" style={{ backgroundColor: "#fff", padding: "25px", borderRadius: "16px", border: "1px solid #eee" }}>
+                            <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "20px", borderLeft: "4px solid #35c5f0", paddingLeft: "15px" }}>
                                 参考にしたアイテム
                             </h2>
 
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                                {room.items.map((item, i) => {
-                                    return (
-                                        <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
-                                            padding: "8px 16px",
-                                            backgroundColor: "#f9f9f9",
-                                            border: "1px solid #ddd",
-                                            borderRadius: "6px",
-                                            fontSize: "14px",
-                                            color: "#555",
-                                            textDecoration: "none"
-                                        }}>
-                                            {item.name} <span style={{ fontSize: "10px", marginLeft: "4px", color: "#888" }}>↗</span>
-                                        </a>
-                                    );
-                                })}
-                            </div>
+                            {/* Pick Up! */}
+                            {room.picks.length > 0 && (
+                                <div style={{ marginBottom: "30px" }}>
+                                    <div style={{ display: "inline-block", backgroundColor: "#0288d1", color: "#fff", padding: "4px 12px", borderRadius: "20px", fontSize: "13px", fontWeight: "bold", marginBottom: "12px" }}>
+                                        Pick Up!
+                                    </div>
+                                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                                        {room.picks.map((item, i) => {
+                                            const style = getLinkStyle(item.url);
+                                            return (
+                                                <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
+                                                    display: "flex",
+                                                    justifyContent: "space-between",
+                                                    alignItems: "center",
+                                                    padding: "15px 20px",
+                                                    backgroundColor: style.bg,
+                                                    border: `1px solid ${style.color}33`,
+                                                    borderRadius: "8px",
+                                                    textDecoration: "none",
+                                                    color: "#333",
+                                                    transition: "transform 0.2s"
+                                                }}>
+                                                    <span style={{ fontWeight: "bold" }}>{item.name}</span>
+                                                    <span style={{ fontSize: "12px", color: style.color, fontWeight: "bold" }}>{style.text}</span>
+                                                </a>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* その他のアイテム */}
+                            {room.items.length > 0 && (
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                                    {room.items.map((item, i) => {
+                                        return (
+                                            <a key={i} href={item.url} target="_blank" rel="noopener noreferrer" style={{
+                                                padding: "8px 16px",
+                                                backgroundColor: "#f9f9f9",
+                                                border: "1px solid #ddd",
+                                                borderRadius: "6px",
+                                                fontSize: "14px",
+                                                color: "#555",
+                                                textDecoration: "none"
+                                            }}>
+                                                {item.name} <span style={{ fontSize: "10px", marginLeft: "4px", color: "#888" }}>↗</span>
+                                            </a>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </section>
                     )}
 
