@@ -94,14 +94,16 @@ export default async function RoomPage({ params }: Props) {
                                     return (
                                         <div key={idx}>
                                             {block.type === "image" ? (
-                                                <div className={`room-image-block ${isNoCrop ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)", marginBottom: "10px" }}>
-                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                    <img
-                                                        src={block.content}
-                                                        alt={`${room.name} 写真 ${idx + 1}`}
-                                                        style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
-                                                    />
-                                                </div>
+                                                <a href={block.content} target="_blank" rel="noopener noreferrer" className="image-link" style={{ display: "block", marginBottom: "10px" }}>
+                                                    <div className={`room-image-block ${isNoCrop ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                        <img
+                                                            src={block.content}
+                                                            alt={`${room.name} 写真 ${idx + 1}`}
+                                                            style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
+                                                        />
+                                                    </div>
+                                                </a>
                                             ) : (
                                                 <div style={{
                                                     fontSize: "16px",
@@ -153,14 +155,16 @@ export default async function RoomPage({ params }: Props) {
                                 const isNoCrop = idx === 0 || idx === 1 || idx === room.images.length - 1;
                                 return (
                                     <div key={idx}>
-                                        <div className={`room-image-block ${isNoCrop ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img
-                                                src={img}
-                                                alt={`${room.name} アングル ${idx + 1}`}
-                                                style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
-                                            />
-                                        </div>
+                                        <a href={img} target="_blank" rel="noopener noreferrer" className="image-link" style={{ display: "block", marginBottom: "20px" }}>
+                                            <div className={`room-image-block ${isNoCrop ? "no-crop" : ""}`} style={{ borderRadius: "12px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                <img
+                                                    src={img}
+                                                    alt={`${room.name} アングル ${idx + 1}`}
+                                                    style={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
+                                                />
+                                            </div>
+                                        </a>
                                         {/* 1枚目の直後にPick Up!を挿入 */}
                                         {idx === 0 && room.picks.length > 0 && (
                                             <div style={{ marginTop: "20px", marginBottom: "10px" }}>

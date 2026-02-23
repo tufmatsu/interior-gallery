@@ -409,6 +409,20 @@ button {
   }
 }
 
+/* 画像リンクのエフェクト */
+.image-link {
+  transition: opacity 0.2s, transform 0.2s;
+  cursor: zoom-in;
+}
+
+.image-link:hover {
+  opacity: 0.9;
+}
+
+.image-link:active {
+  transform: scale(0.98);
+}
+
 /* スマホ最適化 (Mobile) */
 @media (max-width: 768px) {
   .container {
