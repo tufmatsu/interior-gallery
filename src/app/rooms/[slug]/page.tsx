@@ -113,6 +113,55 @@ export default async function RoomPage({ params }: Props) {
                                                         />
                                                     </div>
                                                 </a>
+                                            ) : block.type === "heading_1" ? (
+                                                <h2 style={{
+                                                    fontSize: "22px",
+                                                    fontWeight: "bold",
+                                                    color: "#333",
+                                                    marginTop: "35px",
+                                                    marginBottom: "15px",
+                                                    paddingBottom: "10px",
+                                                    borderBottom: "2px solid #35c5f0",
+                                                    lineHeight: "1.4"
+                                                }}>
+                                                    {block.content}
+                                                </h2>
+                                            ) : block.type === "heading_2" ? (
+                                                <h3 style={{
+                                                    fontSize: "18px",
+                                                    fontWeight: "bold",
+                                                    color: "#444",
+                                                    marginTop: "25px",
+                                                    marginBottom: "10px",
+                                                    paddingLeft: "12px",
+                                                    borderLeft: "3px solid #35c5f0",
+                                                    lineHeight: "1.4"
+                                                }}>
+                                                    {block.content}
+                                                </h3>
+                                            ) : block.type === "product_link" && block.url ? (
+                                                (() => {
+                                                    const linkStyle = getLinkStyle(block.url);
+                                                    return (
+                                                        <a href={block.url} target="_blank" rel="noopener noreferrer" style={{
+                                                            display: "flex",
+                                                            justifyContent: "space-between",
+                                                            alignItems: "center",
+                                                            padding: "14px 18px",
+                                                            backgroundColor: linkStyle.bg,
+                                                            border: `1px solid ${linkStyle.color}33`,
+                                                            borderRadius: "8px",
+                                                            textDecoration: "none",
+                                                            color: "#333",
+                                                            marginTop: "8px",
+                                                            marginBottom: "8px",
+                                                            transition: "transform 0.2s, box-shadow 0.2s"
+                                                        }}>
+                                                            <span style={{ fontWeight: "bold", fontSize: "14px" }}>{block.content}</span>
+                                                            <span style={{ fontSize: "11px", color: linkStyle.color, fontWeight: "bold", whiteSpace: "nowrap", marginLeft: "10px" }}>{linkStyle.text}</span>
+                                                        </a>
+                                                    );
+                                                })()
                                             ) : (
                                                 <div style={{
                                                     fontSize: "16px",

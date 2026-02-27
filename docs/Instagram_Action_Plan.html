@@ -4,322 +4,800 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Action Plan</title>
+    <title>ひとへやLab：アルゴリズム最適化プラン</title>
     <style>
+        :root {
+            --pink: #E1306C;
+            --blue: #405DE6;
+            --green: #28a745;
+            --gold: #f39c12;
+            --gray: #95a5a6;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            line-height: 1.5;
+            color: #1a1a1a;
+            max-width: 1050px;
             margin: 0 auto;
-            padding: 40px 20px;
-            background-color: #f9f9f9;
+            padding: 20px;
+            background: var(--bg);
         }
 
         .container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            background: var(--card);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
-        h1 {
-            color: #E1306C;
-            /* Instagram Color */
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid var(--pink);
+        }
+
+        header h1 {
+            color: var(--pink);
+            font-size: 1.7em;
+        }
+
+        header p {
+            color: #666;
+            margin-top: 5px;
         }
 
         h2 {
-            margin-top: 30px;
-            color: #405DE6;
-            border-left: 5px solid #405DE6;
-            padding-left: 10px;
+            border-left: 8px solid var(--blue);
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: var(--blue);
+            font-size: 1.3em;
         }
 
-        h3 {
-            margin-top: 25px;
+        /* ===== アルゴリズム解析セクション ===== */
+        .algo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 700px) {
+            .algo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .algo-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 18px;
+            background: #fafafa;
+        }
+
+        .algo-card h3 {
+            margin-bottom: 10px;
+            font-size: 1em;
             color: #333;
         }
 
-        table {
+        .rank-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 0.85em;
+        }
+
+        .rank-bar .label {
+            width: 120px;
+            font-weight: bold;
+        }
+
+        .rank-bar .bar-bg {
+            flex: 1;
+            height: 20px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 8px;
+        }
+
+        .rank-bar .bar-fill {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .rank-bar .val {
+            width: 30px;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .time-slot {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9em;
+        }
+
+        .time-slot:last-child {
+            border: none;
+        }
+
+        .time-slot .day {
+            width: 60px;
+            font-weight: bold;
+        }
+
+        .time-slot .time {
+            color: var(--pink);
+            font-weight: bold;
+        }
+
+        .time-slot .note {
+            color: #888;
+            margin-left: 10px;
+            font-size: 0.85em;
+        }
+
+        /* ===== カレンダー ===== */
+        .legend {
+            display: flex;
+            gap: 12px;
+            margin: 15px 0;
+            font-size: 0.8em;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        table.cal {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        ul {
-            margin-bottom: 20px;
-        }
-
-        li {
-            margin-bottom: 5px;
-        }
-
-        .strong {
-            font-weight: bold;
-            color: #E1306C;
-        }
-
-        .alert {
-            background-color: #ffe6e6;
-            border-left: 5px solid #ff4d4d;
-            padding: 15px;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-
-        .service-box {
-            background-color: #e6f7ff;
-            border: 2px solid #1890ff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-
-        .service-title {
-            color: #1890ff;
-            font-weight: bold;
-            font-size: 1.2em;
+            table-layout: fixed;
             margin-bottom: 10px;
+        }
+
+        .cal th,
+        .cal td {
+            border: 1px solid #ddd;
+            padding: 4px 5px;
+            vertical-align: top;
+            height: 95px;
+            font-size: 0.8em;
+        }
+
+        .cal th {
+            background: #f1f3f4;
+            text-align: center;
+            height: auto;
+            font-size: 0.85em;
+            color: #555;
+        }
+
+        .cal .dn {
+            font-weight: bold;
             display: block;
+            margin-bottom: 1px;
+            font-size: 1.1em;
+        }
+
+        .tag {
+            display: block;
+            margin-bottom: 2px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            color: white;
+            line-height: 1.3;
+        }
+
+        .tag-post {
+            background: var(--pink);
+        }
+
+        .tag-make {
+            background: var(--blue);
+        }
+
+        .tag-stock {
+            background: var(--green);
+        }
+
+        .tag-off {
+            background: var(--gray);
+        }
+
+        .tag-turbo {
+            background: var(--gold);
+            color: #333;
+            font-weight: bold;
+        }
+
+        .tag-hours {
+            background: #fef9e7;
+            color: #7d6608;
+            border: 1px solid #f9e79f;
+            font-weight: bold;
+        }
+
+        .td-off {
+            background: #f5f5f5;
+        }
+
+        .td-turbo {
+            background: #fffde7;
+        }
+
+        .td-weekend {
+            background: #eef7ff;
+        }
+
+        /* ===== 評価セクション ===== */
+        .eval-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .eval-card {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: #fafafa;
+            border: 1px solid #eee;
+        }
+
+        .eval-card .score {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .eval-card .metric {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .score-s {
+            color: var(--pink);
+        }
+
+        .score-a {
+            color: var(--blue);
+        }
+
+        .score-b {
+            color: var(--green);
+        }
+
+        .summary-note {
+            background: #fff5f8;
+            border: 1px solid #ffe0e9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        .month-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.85em;
+            flex-wrap: wrap;
+        }
+
+        .month-stats .stat {
+            background: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .month-stats strong {
+            color: var(--pink);
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
 
-        <h1>📅 「ひとへやLab」インスタグラム 1年間投稿・準備マスタープラン</h1>
+        <header>
+            <h1>📅 ひとへやLab：アルゴリズム最適化プラン</h1>
+            <p>リサーチに基づく「水曜・土曜 20:00」固定投稿戦略</p>
+        </header>
 
-        <h2>🎯 目標 (KGI)</h2>
-        <ul>
-            <li><strong>1年後:</strong> フォロワー1万人 / 安定的なWebサイト流入の確立</li>
-            <li><strong>ターゲット:</strong> 一人暮らしを始める人、狭い部屋をおしゃれにしたい人</li>
-            <li><strong>最終ゴール:</strong> <span class="strong">有料コーディネートサービス（3D提案）の立ち上げ</span></li>
-        </ul>
+        <!-- ==================== アルゴリズム解析 ==================== -->
+        <h2>🤖 Instagram リールのアルゴリズム解析</h2>
 
-        <h2>🗓️ 全体スケジュール概要</h2>
+        <div class="algo-grid">
+            <div class="algo-card">
+                <h3>📊 ランキング要素（重要度）</h3>
+                <div class="rank-bar">
+                    <span class="label">視聴完了率</span>
+                    <div class="bar-bg">
+                        <div class="bar-fill" style="width:95%; background:var(--pink);"></div>
+                    </div>
+                    <span class="val">95</span>
+                </div>
+                <div class="rank-bar">
+                    <span class="label">シェア(DM)</span>
+                    <div class="bar-bg">
+                        <div class="bar-fill" style="width:90%; background:#c13584;"></div>
+                    </div>
+                    <span class="val">90</span>
+                </div>
+                <div class="rank-bar">
+                    <span class="label">保存数</span>
+                    <div class="bar-bg">
+                        <div class="bar-fill" style="width:85%; background:var(--blue);"></div>
+                    </div>
+                    <span class="val">85</span>
+                </div>
+                <div class="rank-bar">
+                    <span class="label">初速エンゲージ</span>
+                    <div class="bar-bg">
+                        <div class="bar-fill" style="width:75%; background:var(--green);"></div>
+                    </div>
+                    <span class="val">75</span>
+                </div>
+                <div class="rank-bar">
+                    <span class="label">トピック一貫性</span>
+                    <div class="bar-bg">
+                        <div class="bar-fill" style="width:70%; background:var(--gold);"></div>
+                    </div>
+                    <span class="val">70</span>
+                </div>
+                <p style="font-size:0.75em; color:#888; margin-top:8px;">※ リール視聴の55%はフォロワー外から。新規獲得に最強のフォーマット。</p>
+            </div>
 
-        <table>
+            <div class="algo-card">
+                <h3>⏰ 最適な投稿時間（日本時間）</h3>
+                <div class="time-slot">
+                    <span class="day">水曜</span>
+                    <span class="time">20:00</span>
+                    <span class="note">← 平日ゴールデンタイム</span>
+                </div>
+                <div class="time-slot">
+                    <span class="day">土曜</span>
+                    <span class="time">20:00</span>
+                    <span class="note">← 週末リラックス時間帯</span>
+                </div>
+                <div class="time-slot">
+                    <span class="day">推奨帯</span>
+                    <span class="time">19:00-22:00</span>
+                    <span class="note">全曜日でエンゲージ高</span>
+                </div>
+                <p style="font-size:0.75em; color:#888; margin-top:12px;">
+                    <strong>週2回リールの評価：</strong>推奨は週2-4回。週2は下限だが、質が高ければ十分に成長可能。
+                    一貫した曜日・時間の固定がアルゴリズムに最も評価される。
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== 3月カレンダー ==================== -->
+        <h2>🗓️ 3月：ロケットスタート期（2日に1回投稿）</h2>
+        <p style="font-size:0.9em; margin-bottom:5px;">
+            「🔨制作」→翌日「📤投稿」のサイクル。2日〜6日は集中稼働で貯金を作り、稼働不可日(11,18,19,25)をカバーします。
+        </p>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="dot" style="background:var(--blue);"></div>🔨 制作日
+            </div>
+            <div class="legend-item">
+                <div class="dot" style="background:var(--pink);"></div>📤 投稿日(20:00)
+            </div>
+            <div class="legend-item">
+                <div class="dot" style="background:var(--green);"></div>📦 ストック追加
+            </div>
+            <div class="legend-item">
+                <div class="dot" style="background:var(--gold);"></div>⚡ 集中稼働
+            </div>
+            <div class="legend-item">
+                <div class="dot" style="background:var(--gray);"></div>★ 休み
+            </div>
+        </div>
+
+        <table class="cal">
             <thead>
                 <tr>
-                    <th>フェーズ</th>
-                    <th>期間</th>
-                    <th>稼働状況</th>
-                    <th>投稿頻度</th>
-                    <th>主なタスク</th>
+                    <th>月</th>
+                    <th>火</th>
+                    <th>水</th>
+                    <th>木</th>
+                    <th>金</th>
+                    <th>土</th>
+                    <th>日</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- Week 1: 3/1 -->
                 <tr>
-                    <td><strong>① 準備・ストック期</strong></td>
-                    <td>2/17 〜 2/28</td>
-                    <td>全日稼働可</td>
-                    <td>(未投稿)</td>
-                    <td><strong>3月分の全投稿(31本)作成</strong>、プロフ設計、テンプレート作成</td>
+                    <td colspan="6"></td>
+                    <td>
+                        <span class="dn">1</span>
+                        <span class="tag tag-post">📤 リール#1 20:00</span>
+                        <span class="tag tag-hours">⌛ 3.5h (制作+投稿)</span>
+                    </td>
                 </tr>
+                <!-- Week 2: 3/2-8 -->
                 <tr>
-                    <td><strong>② ロケットスタート期</strong></td>
-                    <td>3/1 〜 3/31</td>
-                    <td>全日稼働可</td>
-                    <td><strong>毎日投稿</strong></td>
-                    <td><strong><span class="strong">※2/28に9投稿(グリッド埋め)実施</span></strong><br>4〜5月分のストック作成、反応分析</td>
+                    <td class="td-turbo">
+                        <span class="dn">2</span>
+                        <span class="tag tag-turbo">⚡ 集中稼働</span>
+                        <span class="tag tag-make">🔨 #2,#3 制作</span>
+                        <span class="tag tag-hours">⌛ 7.0h</span>
+                    </td>
+                    <td class="td-turbo">
+                        <span class="dn">3</span>
+                        <span class="tag tag-turbo">⚡ 集中稼働</span>
+                        <span class="tag tag-post">📤 リール#2 20:00</span>
+                        <span class="tag tag-make">🔨 #4 制作</span>
+                        <span class="tag tag-hours">⌛ 7.0h</span>
+                    </td>
+                    <td class="td-turbo">
+                        <span class="dn">4</span>
+                        <span class="tag tag-turbo">⚡ 集中稼働</span>
+                        <span class="tag tag-make">🔨 #5,#6 制作</span>
+                        <span class="tag tag-hours">⌛ 7.0h</span>
+                    </td>
+                    <td class="td-turbo">
+                        <span class="dn">5</span>
+                        <span class="tag tag-turbo">⚡ 集中稼働</span>
+                        <span class="tag tag-post">📤 リール#3 20:00</span>
+                        <span class="tag tag-make">🔨 #7 制作</span>
+                        <span class="tag tag-hours">⌛ 7.0h</span>
+                    </td>
+                    <td class="td-turbo">
+                        <span class="dn">6</span>
+                        <span class="tag tag-turbo">⚡ 集中稼働</span>
+                        <span class="tag tag-make">🔨 #8,#9 制作</span>
+                        <span class="tag tag-stock">📦 +4 ストック</span>
+                        <span class="tag tag-hours">⌛ 7.0h</span>
+                    </td>
+                    <td>
+                        <span class="dn">7</span>
+                        <span class="tag tag-post">📤 リール#4 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td>
+                        <span class="dn">8</span>
+                        <span class="tag tag-make">🔨 #10 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
                 </tr>
+                <!-- Week 3: 3/9-15 -->
                 <tr>
-                    <td><strong>③ 安定運用期 (初期)</strong></td>
-                    <td>4/1 〜 6/30</td>
-                    <td>土日のみ</td>
-                    <td><strong>週3投稿</strong></td>
-                    <td>週末まとめ作り、ストーリーズ活用、<strong><span class="strong">サービスモニター募集開始</span></strong></td>
+                    <td>
+                        <span class="dn">9</span>
+                        <span class="tag tag-post">📤 リール#5 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td>
+                        <span class="dn">10</span>
+                        <span class="tag tag-make">🔨 #11 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td class="td-off">
+                        <span class="dn">11</span>
+                        <span class="tag tag-off">★ 稼働不可</span>
+                        <span class="tag tag-post">📤 リール#6 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td>
+                        <span class="dn">12</span>
+                        <span class="tag tag-make">🔨 #12 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td>
+                        <span class="dn">13</span>
+                        <span class="tag tag-post">📤 リール#7 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td>
+                        <span class="dn">14</span>
+                        <span class="tag tag-make">🔨 #13 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td>
+                        <span class="dn">15</span>
+                        <span class="tag tag-post">📤 リール#8 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
                 </tr>
+                <!-- Week 4: 3/16-22 -->
                 <tr>
-                    <td><strong>④ 安定運用期 (中期)</strong></td>
-                    <td>7/1 〜 12/31</td>
-                    <td>土日のみ</td>
-                    <td><strong>週2投稿</strong></td>
-                    <td>質重視へシフト、フィード(静止画)とリールの使い分け、<strong>サービス本格始動</strong></td>
+                    <td>
+                        <span class="dn">16</span>
+                        <span class="tag tag-make">🔨 #14 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td>
+                        <span class="dn">17</span>
+                        <span class="tag tag-post">📤 リール#9 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td class="td-off">
+                        <span class="dn">18</span>
+                        <span class="tag tag-off">★ 稼働不可</span>
+                    </td>
+                    <td class="td-off">
+                        <span class="dn">19</span>
+                        <span class="tag tag-off">★ 稼働不可</span>
+                        <span class="tag tag-post">📤 リール#10 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td>
+                        <span class="dn">20</span>
+                        <span class="tag tag-make">🔨 #15 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td>
+                        <span class="dn">21</span>
+                        <span class="tag tag-post">📤 リール#11 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td>
+                        <span class="dn">22</span>
+                        <span class="tag tag-make">🔨 #16 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
                 </tr>
+                <!-- Week 5: 3/23-29 -->
                 <tr>
-                    <td><strong>⑤ 拡大期</strong></td>
-                    <td>1/1 〜 2/28</td>
-                    <td>土日のみ</td>
-                    <td><strong>週2〜3投稿</strong></td>
-                    <td>引越しシーズンに向けた総集編、<strong>サービス繁忙期対応</strong></td>
+                    <td>
+                        <span class="dn">23</span>
+                        <span class="tag tag-post">📤 リール#12 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td>
+                        <span class="dn">24</span>
+                        <span class="tag tag-make">🔨 #17 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td class="td-off">
+                        <span class="dn">25</span>
+                        <span class="tag tag-off">★ 稼働不可</span>
+                        <span class="tag tag-post">📤 リール#13 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td>
+                        <span class="dn">26</span>
+                        <span class="tag tag-make">🔨 #18 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td>
+                        <span class="dn">27</span>
+                        <span class="tag tag-post">📤 リール#14 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td>
+                        <span class="dn">28</span>
+                        <span class="tag tag-make">🔨 #19 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td>
+                        <span class="dn">29</span>
+                        <span class="tag tag-post">📤 リール#15 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                </tr>
+                <!-- Week 6: 3/30-31 -->
+                <tr>
+                    <td>
+                        <span class="dn">30</span>
+                        <span class="tag tag-make">🔨 #20 制作</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td>
+                        <span class="dn">31</span>
+                        <span class="tag tag-post">📤 リール#16 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (予約済)</span>
+                    </td>
+                    <td colspan="5"
+                        style="background:#fff5f8; text-align:center; vertical-align:middle; font-size:0.85em;">
+                        <strong style="color:var(--pink);">3月実績：リール16本投稿 / 制作20本(ストック4本)</strong>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="service-box">
-            <span class="service-title">💡 将来の収益化モデル：3Dコーディネート提案サービス</span>
-            <p>インスタの投稿を「ポートフォリオ」として活用し、ココナラ等で有料サービスを展開します。</p>
-            <ul>
-                <li><strong>梅プラン (〜5,000円):</strong> 間取り図から1案作成（修正なし）</li>
-                <li><strong>竹プラン (〜15,000円):</strong> 2案提案 + 家具購入リスト + 修正1回</li>
-                <li><strong>松プラン (30,000円〜):</strong> ビデオ通話ヒアリング + 無制限修正 + VRビュー</li>
-            </ul>
+        <div class="month-stats">
+            <div class="stat">📤 投稿数: <strong>16本</strong></div>
+            <div class="stat">🔨 制作数: <strong>20本</strong></div>
+            <div class="stat">📦 4月繰越ストック: <strong>4本</strong></div>
+            <div class="stat">⌛ 総作業時間: <strong>約70h</strong></div>
         </div>
 
-        <hr>
+        <!-- ==================== 4月カレンダー ==================== -->
+        <h2>🗓️ 4月〜：安定運用フェーズ（週2回 水・土 20:00 投稿）</h2>
+        <p style="font-size:0.9em; margin-bottom:5px;">
+            土曜に制作して即投稿。日曜に制作して水曜予約。平日の作業は0h。
+        </p>
 
-        <h2>🛠️ 具体的なアクションプラン</h2>
+        <table class="cal">
+            <thead>
+                <tr>
+                    <th>月</th>
+                    <th>火</th>
+                    <th>水</th>
+                    <th>木</th>
+                    <th>金</th>
+                    <th>土</th>
+                    <th>日</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Week 1 -->
+                <tr>
+                    <td colspan="2"></td>
+                    <td>
+                        <span class="dn">1</span>
+                        <span class="tag tag-post">📤 リール(予約) 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h</span>
+                    </td>
+                    <td><span class="dn">2</span></td>
+                    <td><span class="dn">3</span></td>
+                    <td class="td-weekend">
+                        <span class="dn">4</span>
+                        <span class="tag tag-make">🔨 A制作 (午前)</span>
+                        <span class="tag tag-post">📤 リールA 20:00</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td class="td-weekend">
+                        <span class="dn">5</span>
+                        <span class="tag tag-make">🔨 B制作 (午前)</span>
+                        <span class="tag tag-stock">📦 水曜予約セット</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                </tr>
+                <!-- Week 2 -->
+                <tr>
+                    <td><span class="dn">6</span></td>
+                    <td><span class="dn">7</span></td>
+                    <td>
+                        <span class="dn">8</span>
+                        <span class="tag tag-post">📤 リールB 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (自動)</span>
+                    </td>
+                    <td><span class="dn">9</span></td>
+                    <td><span class="dn">10</span></td>
+                    <td class="td-weekend">
+                        <span class="dn">11</span>
+                        <span class="tag tag-make">🔨 C制作 (午前)</span>
+                        <span class="tag tag-post">📤 リールC 20:00</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td class="td-weekend">
+                        <span class="dn">12</span>
+                        <span class="tag tag-make">🔨 D制作 (午前)</span>
+                        <span class="tag tag-stock">📦 水曜予約セット</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                </tr>
+                <!-- Week 3 -->
+                <tr>
+                    <td><span class="dn">13</span></td>
+                    <td><span class="dn">14</span></td>
+                    <td>
+                        <span class="dn">15</span>
+                        <span class="tag tag-post">📤 リールD 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (自動)</span>
+                    </td>
+                    <td><span class="dn">16</span></td>
+                    <td><span class="dn">17</span></td>
+                    <td class="td-weekend">
+                        <span class="dn">18</span>
+                        <span class="tag tag-make">🔨 E制作 (午前)</span>
+                        <span class="tag tag-post">📤 リールE 20:00</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td class="td-weekend">
+                        <span class="dn">19</span>
+                        <span class="tag tag-make">🔨 F制作 (午前)</span>
+                        <span class="tag tag-stock">📦 水曜予約セット</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                </tr>
+                <!-- Week 4 -->
+                <tr>
+                    <td><span class="dn">20</span></td>
+                    <td><span class="dn">21</span></td>
+                    <td>
+                        <span class="dn">22</span>
+                        <span class="tag tag-post">📤 リールF 20:00</span>
+                        <span class="tag tag-hours">⌛ 0h (自動)</span>
+                    </td>
+                    <td><span class="dn">23</span></td>
+                    <td><span class="dn">24</span></td>
+                    <td class="td-weekend">
+                        <span class="dn">25</span>
+                        <span class="tag tag-make">🔨 G制作 (午前)</span>
+                        <span class="tag tag-post">📤 リールG 20:00</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                    <td class="td-weekend">
+                        <span class="dn">26</span>
+                        <span class="tag tag-make">🔨 H制作 (午前)</span>
+                        <span class="tag tag-stock">📦 水曜予約セット</span>
+                        <span class="tag tag-hours">⌛ 3.5h</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-        <h3>【フェーズ①】 準備・ストック期 (2/17 〜 2/28)</h3>
-        <p><span class="strong">★最重要ミッション: 「合計40投稿分」の素材を完パケする</span></p>
-        <p>「3月分(31投稿)」に加え、<strong>「スタートダッシュ用(9投稿)」</strong>を追加しました。</p>
-        <ol>
-            <li><strong>アカウント設計 (2/17 - 2/19)</strong>
-                <ul>
-                    <li>プロフィール写真設定 (作成済みロゴを使用)</li>
-                    <li>プロフィール文作成 (「3Dで理想の一人暮らしを提案」など)</li>
-                    <li>ハイライト枠作成 (「自己紹介」「間取り」「家具」など)</li>
-                </ul>
-            </li>
-            <li><strong>投稿テンプレート作成 (2/20 - 2/22)</strong>
-                <ul>
-                    <li><strong>リール (動画):</strong> 3Dルームツアー用 (音楽、カット割り、テロップ位置)</li>
-                    <li><strong>フィード (静止画):</strong> 間取り図解説、家具まとめ用 (表紙、サンクスページ)</li>
-                    <li><strong>キャプション:</strong> ハッシュタグセット (#一人暮らし #インテリア #3Dパース 等) の作成</li>
-                </ul>
-            </li>
-            <li><strong>投稿作成・予約 (2/23 - 2/28)</strong>
-                <ul>
-                    <li><span class="strong">グリッド埋め用 (9投稿):</span> 自己紹介、代表作の3Dパース、コンセプト説明など</li>
-                    <li><span class="strong">3月毎日投稿分 (31投稿):</span> ツアー動画、間取り画像、家具紹介など</li>
-                    <li><strong>Meta Business Suite</strong> 等を使って予約投稿を完了させる</li>
-                </ul>
-            </li>
-        </ol>
-
-        <hr>
-
-        <h3>【フェーズ②】 ロケットスタート期 (3/1 〜 3/31)</h3>
-        <p><span class="strong">★「グリッド埋め」戦略で信頼を獲得する</span></p>
-        <div class="alert">
-            🚀 2/28（または3/1午前中）に「9投稿」を一気に行います！<br>
-            これでプロフィール画面（3列×3行）を埋め、初見ユーザーに「活動している本格的なアカウント」と認識させます。
+        <div class="month-stats">
+            <div class="stat">📤 月間投稿数: <strong>8本</strong></div>
+            <div class="stat">⌛ 週末作業: <strong>7.0h/週</strong> (土3.5h + 日3.5h)</div>
+            <div class="stat">📱 平日作業: <strong>0h</strong> (コメント返信のみ)</div>
         </div>
-        <ol>
-            <li><strong>運用数値のチェック (毎日)</strong>
-                <ul>
-                    <li>どの部屋/サムネイルが保存されたか？を分析</li>
-                    <li>反応が良い部屋のテイストを把握</li>
-                </ul>
-            </li>
-            <li><strong>4月・5月分のストック作成 (全日)</strong>
-                <ul>
-                    <li><strong>目標:</strong> 4月(週3×4週=12本) + 5月(週3×4週=12本) = <strong>計24本</strong></li>
-                    <li>土日稼働になる前に、最低でもGW明けまでの分を作り溜める</li>
-                </ul>
-            </li>
-            <li><strong>Webサイトとの連携強化</strong>
-                <ul>
-                    <li>インスタのプロフリンクからサイトへの流入を確認</li>
-                </ul>
-            </li>
-        </ol>
 
-        <hr>
+        <!-- ==================== バズり評価 ==================== -->
+        <h2>📈 このプランの「バズり」評価</h2>
 
-        <h3>【フェーズ③】 安定運用期・初期 (4/1 〜 6/30)</h3>
-        <p><span class="strong">★サービス化に向けた「実績作り」を開始</span></p>
-        <p>ここからは「週末にまとめて作業」のサイクルを確立しつつ、サービスのテストを行います。</p>
-        <ol>
-            <li><strong>投稿スケジュール</strong>
-                <ul>
-                    <li><strong>水曜・金曜:</strong> 予約投稿 (週末に作ったもの)</li>
-                    <li><strong>土曜or日曜:</strong> リアルタイム投稿 (ストーリーズで質問箱など)</li>
-                </ul>
-            </li>
-            <li><strong>サービス準備 (モニター募集)</strong>
-                <ul>
-                    <li><span class="strong">6月頃〜:</span> フォロワー限定で「無料モニター」または「格安モニター(1,000円)」を数名募集。</li>
-                    <li>実際にヒアリングから提案までの流れをテストし、<strong>「お客様の声（感想）」</strong>を集める。</li>
-                </ul>
-            </li>
-            <li><strong>週末ルーティン (土日)</strong>
-                <ul>
-                    <li><strong>土曜:</strong> 新しい部屋の3Dモデリング、モニター対応</li>
-                    <li><strong>日曜:</strong> 動画編集、キャプション作成、翌週分の予約投稿セット</li>
-                </ul>
-            </li>
-        </ol>
+        <div class="eval-grid">
+            <div class="eval-card">
+                <div class="score score-s">S</div>
+                <div class="metric">継続可能性</div>
+                <p style="font-size:0.75em; color:#888;">新卒でも無理なく1年続く</p>
+            </div>
+            <div class="eval-card">
+                <div class="score score-a">A</div>
+                <div class="metric">アルゴリズム適合</div>
+                <p style="font-size:0.75em; color:#888;">固定曜日+時間は高評価</p>
+            </div>
+            <div class="eval-card">
+                <div class="score score-a">A</div>
+                <div class="metric">コンテンツ品質</div>
+                <p style="font-size:0.75em; color:#888;">1モデル1リール+Web解説</p>
+            </div>
+            <div class="eval-card">
+                <div class="score score-b">B+</div>
+                <div class="metric">拡散力</div>
+                <p style="font-size:0.75em; color:#888;">頻度は下限だが質でカバー</p>
+            </div>
+            <div class="eval-card">
+                <div class="score score-s">S</div>
+                <div class="metric">差別化</div>
+                <p style="font-size:0.75em; color:#888;">Web解説は唯一無二の強み</p>
+            </div>
+        </div>
 
-        <hr>
-
-        <h3>【フェーズ④】 安定運用期・中期 (7/1 〜 12/31)</h3>
-        <p><span class="strong">★有料サービス本格始動</span></p>
-        <p>無理なく続けられるペースに落とし、その分「質」を上げます。</p>
-        <ol>
-            <li><strong>サービス販売開始 (ココナラ等)</strong>
-                <ul>
-                    <li>集めた「お客様の声」を実績として掲載し、正式にココナラ等で出品を開始。</li>
-                    <li>まずは「月3件」などリソースの範囲内で受注を制限する。</li>
-                </ul>
-            </li>
-            <li><strong>投稿内容のブラッシュアップ</strong>
-                <ul>
-                    <li>単なるルームツアーだけでなく、「狭い部屋のレイアウト術」「家具の配置比較」など、<strong>情報価値の高い動画</strong>を作る</li>
-                    <li>フォロワーからのリクエスト部屋を作る (「6畳縦長でお願いします！」など)</li>
-                </ul>
-            </li>
-        </ol>
-
-        <hr>
-
-        <h3>【フェーズ⑤】 拡大期 (1/1 〜 2/28)</h3>
-        <p><span class="strong">★引越しシーズン・繁忙期！</span></p>
-        <p>1年で一番インテリア需要が高まる時期です。ここで一気にフォロワーを伸ばし、サービス受注を最大化します。</p>
-        <ol>
-            <li><strong>サービス受注体制の強化</strong>
-                <ul>
-                    <li>年末年始の休みを使ってストックを作ることで、土日の時間を「お客様対応」に充てる。</li>
-                </ul>
-            </li>
-            <li><strong>「新生活応援」コンテンツ</strong>
-                <ul>
-                    <li>「初めての一人暮らし、これだけは買っておけ」</li>
-                    <li>Webサイトへの誘導を強化 (具体的な家具リストを見せる)</li>
-                </ul>
-            </li>
-        </ol>
-
-        <hr>
-
-        <h2>💡 土日稼働で生き残るためのポイント</h2>
-        <ol>
-            <li><strong>グリッド戦略（kentos_room式）の徹底</strong>
-                <ul>
-                    <li>初速でコケないために、最初の見た目（9投稿）を完璧に整えてからスタートを切ります。</li>
-                </ul>
-            </li>
-            <li><strong>「3月の平日」を死ぬ気で使う</strong>
-                <ul>
-                    <li>この1ヶ月で作った「ストック」と「テンプレート」が、4月以降の自分を救います。</li>
-                </ul>
-            </li>
-            <li><strong>「完成度70%」で出す</strong>
-                <ul>
-                    <li>100%を目指して投稿が止まるより、70%でも出し続ける方がインスタは伸びます。</li>
-                </ul>
-            </li>
-        </ol>
+        <div class="summary-note">
+            <strong>💡 総合評価：A（高水準で推奨）</strong><br>
+            週2回（水・土 20:00）は推奨範囲の下限ですが、「1モデル＝1リール＝1Web解説」という<strong>保存・シェアされやすいコンテンツ設計</strong>により、
+            アルゴリズムが最も重視する「視聴完了率」「保存数」「シェア数」を高い水準で獲得できる見込みです。
+            毎日投稿で質を下げるよりも、週2回の極上コンテンツの方がフォロワー獲得効率は高くなります。
+        </div>
 
     </div>
-
 </body>
 
 </html>

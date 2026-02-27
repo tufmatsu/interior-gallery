@@ -29,8 +29,9 @@ function parseItems(property: any): { name: string; url: string }[] {
 }
 
 export type ContentBlock = {
-  type: "text" | "image";
+  type: "text" | "image" | "heading_1" | "heading_2" | "product_link";
   content: string;
+  url?: string; // product_link用：商品のURL
 };
 
 export type Room = {
@@ -44,6 +45,22 @@ export type Room = {
   picks: { name: string; url: string }[];
   content?: ContentBlock[]; // 本文のブロックデータ
 };
+
+// 見出しブロックからテキストとリンクを抽出するヘルパー関数
+function extractHeadingInfo(richText: any[]): { text: string; url: string | null } {
+  let text = "";
+  let url: string | null = null;
+
+  for (const t of richText) {
+    text += t.plain_text;
+    // リンクが埋め込まれている場合はURLを取得
+    if (t.href) {
+      url = t.href;
+    }
+  }
+
+  return { text, url };
+}
 
 // ページの本文ブロックを取得する関数
 async function getPageBlocks(pageId: string): Promise<ContentBlock[]> {
@@ -73,6 +90,18 @@ async function getPageBlocks(pageId: string): Promise<ContentBlock[]> {
       } else if (block.type === "image") {
         const url = block.image.file?.url || block.image.external?.url;
         if (url) blocks.push({ type: "image", content: url });
+      } else if (block.type === "heading_1") {
+        const { text } = extractHeadingInfo(block.heading_1.rich_text);
+        if (text) blocks.push({ type: "heading_1", content: text });
+      } else if (block.type === "heading_2") {
+        const { text } = extractHeadingInfo(block.heading_2.rich_text);
+        if (text) blocks.push({ type: "heading_2", content: text });
+      } else if (block.type === "heading_3") {
+        // 見出し3：リンクがあれば商品リンク、なければ無視
+        const { text, url } = extractHeadingInfo(block.heading_3.rich_text);
+        if (text && url) {
+          blocks.push({ type: "product_link", content: text, url });
+        }
       }
     }
     return blocks;
