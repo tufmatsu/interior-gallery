@@ -69,11 +69,46 @@ export default async function RoomPage({ params }: Props) {
                     </h1>
 
                     {/* 補足情報（部屋サイズなど） */}
-                    <div style={{ color: "#828c94", fontSize: "14px", fontWeight: "500", marginBottom: "35px", display: "flex", alignItems: "center", gap: "8px" }}>
+                    <div style={{ color: "#828c94", fontSize: "14px", fontWeight: "500", marginBottom: "20px", display: "flex", alignItems: "center", gap: "8px" }}>
                         <span>{formattedName}</span>
                         <span style={{ color: "#eee" }}>|</span>
                         <span>ひとへやLab</span>
                     </div>
+
+                    {/* プロモーション表記 */}
+                    <details style={{
+                        marginBottom: "30px",
+                        backgroundColor: "#f9fafb",
+                        borderRadius: "6px",
+                        fontSize: "11px",
+                        color: "#777",
+                        textAlign: "left",
+                        border: "1px solid #eee",
+                        overflow: "hidden"
+                    }}>
+                        <summary style={{
+                            padding: "8px 12px",
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                            color: "#888",
+                            listStyle: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "5px",
+                            fontSize: "11px"
+                        }}>
+                            <span style={{ borderBottom: "1px dotted #999" }}>本ページはプロモーションを含みます</span>
+                            <span style={{ fontSize: "10px", transform: "rotate(90deg)" }}>›</span>
+                        </summary>
+                        <div style={{ padding: "10px 15px 15px", borderTop: "1px solid #eee", lineHeight: "1.5" }}>
+                            <p>
+                                当サイトにはアフィリエイトリンクが含まれます。<br />
+                                リンク先で商品を購入いただくと研究員に収益が発生することがあります。<br />
+                                もし望まれない方は、商品名を検索して別のサイト等でご購入くださいませ～🌿
+                            </p>
+                        </div>
+                    </details>
 
                     {/* 記事本文セクション (Notionの本文がある場合はこちらを優先) */}
                     <div style={{ display: "flex", flexDirection: "column", gap: "25px", marginBottom: "40px" }}>
