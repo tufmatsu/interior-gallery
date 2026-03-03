@@ -46,8 +46,8 @@ export default async function Home() {
 
           <div style={{ maxWidth: "600px", margin: "0 auto", lineHeight: "1.6", color: "#555", fontSize: "13px" }}>
             <p style={{ marginBottom: "10px" }}>
-              最近インテリアにハマった<strong style={{ color: "#333", background: "linear-gradient(transparent 60%, #bae6fd 60%)" }}>ひとへやLab研究員</strong>が、<br className="pc-only" />
-              住んでみたい部屋をお届けします。お部屋づくりの辞書としてお使いください！
+              インテリアを勉強中の<strong style={{ color: "#333", background: "linear-gradient(transparent 60%, #bae6fd 60%)" }}>ひとへやLab研究員</strong>が、<br className="pc-only" />
+              住んでみたい部屋をお届けします。お部屋づくりの参考にどうぞ！
             </p>
           </div>
 
